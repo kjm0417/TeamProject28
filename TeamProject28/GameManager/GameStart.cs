@@ -9,7 +9,8 @@ namespace TeamProject28.GameManager
 {
     internal class GameStart
     {
-        public  Player player= new Player();//player 정보 가져오기
+        public Player player = new Player();//player 정보 가져오기
+        public Battle battle = new Battle();//전투 정보 가져오기
         public static GameStart instance;
 
         public int Input() //선택 입력 기능
@@ -57,7 +58,7 @@ namespace TeamProject28.GameManager
                     player.PlayerStats();
                     break;
                 case 2:
-                    Console.WriteLine("전투 시작");
+                    battle.Start();
                     break;
                 case 0:
                     return;
