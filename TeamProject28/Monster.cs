@@ -14,6 +14,7 @@ namespace TeamProject28
         public int IQ;
         public int maxTime;
         public int currentTime;
+        public int exp;
         public Monster(MonsterType monsterType)
         {
             switch (monsterType)
@@ -24,6 +25,7 @@ namespace TeamProject28
                     this.IQ = 5;
                     this.maxTime = 15;
                     this.currentTime = maxTime;
+                    this.exp = 1;
                     break;
                 case MonsterType.Normal:
                     this.level = 2;
@@ -31,13 +33,15 @@ namespace TeamProject28
                     this.IQ = 10;
                     this.maxTime = 9;
                     this.currentTime = maxTime;
+                    this.exp = 2;
                     break;
                 case MonsterType.Hard:
                     this.level = 3;
                     this.name = "어려운 과제";
                     this.IQ = 8;
-                    this.maxTime = 25;
+                    this.maxTime = 15;
                     this.currentTime = maxTime;
+                    this.exp = 3;
                     break;
                 case MonsterType.Boss:
                     this.level = 5;
@@ -45,6 +49,7 @@ namespace TeamProject28
                     this.IQ = 10;
                     this.maxTime = 30;
                     this.currentTime = maxTime;
+                    this.exp = 5;
                     break;
                 default:
                     this.level = 0;
@@ -52,6 +57,7 @@ namespace TeamProject28
                     this.IQ = 0;
                     this.maxTime = 1;
                     this.currentTime = maxTime;
+                    this.exp = 0;
                     break;
             }
         }

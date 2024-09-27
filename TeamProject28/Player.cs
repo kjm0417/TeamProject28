@@ -14,11 +14,12 @@ namespace TeamProject28
         public int level;
         public string name;
         public Job job;
-        public int IQ;
+        public double IQ;
         public int focus;
         public int maxTime;
         public int currentTime;
         public int gold;
+        public int exp;
 
         public Player()
         {
@@ -30,6 +31,7 @@ namespace TeamProject28
             this.maxTime = 100;
             this.currentTime = maxTime;
             this.gold = 1500;
+            this.exp = 0;
         }
 
         public enum Job { 수강생, 튜터, 담임매니저 }
@@ -50,6 +52,7 @@ namespace TeamProject28
 
             Console.WriteLine("Lv. {0}", level);
             Console.WriteLine("{0} ( {1} )", name, job);
+            Console.WriteLine("exp : {0}", exp);
             Console.WriteLine("IQ : {0}", IQ);
             Console.WriteLine("집중력 : {0}", focus);
             Console.WriteLine("시간 : {0}", currentTime);

@@ -32,6 +32,7 @@ namespace TeamProject28.GameManager
             {
                 instance = this;
             }
+            Console.Clear();
             Console.WriteLine("스파르타 무한의 탑에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 무한의 탑을 오르면서 높을 층을 갱신하는 게임입니다");
             ActionSelect();
@@ -40,7 +41,6 @@ namespace TeamProject28.GameManager
 
         public void ActionSelect()
         {
-            Console.Clear();
             Console.WriteLine("\n1. 상태 보기");
             Console.WriteLine("2. 전투 시작");
             Console.WriteLine("0. 게임 종료");

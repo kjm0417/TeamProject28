@@ -50,7 +50,7 @@ namespace TeamProject28
             }
             Console.ForegroundColor = ConsoleColor.White;
 
-            Console.WriteLine($"\n[내정보]\nLv.{player.level} {player.name} (전사)\nHP {player.currentTime}/{player.maxTime}\n");
+            Console.WriteLine($"\n[내정보]\nLv.{player.level} {player.name} {player.job}\nHP {player.currentTime}/{player.maxTime}\n");
             Console.WriteLine("1. 공격\n");
 
             // 전투 행동 선택
@@ -59,16 +59,14 @@ namespace TeamProject28
             int action = GameStart.instance.Input();
 
             // 행동에 따라 전투 시작
-            if (action == 1)
-            {
-                BattleLoop(); // 턴제 전투 루프 시작
-            }
-            else
+            while (action < 1 || action > 1)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다.");
                 Console.ForegroundColor = ConsoleColor.White;
+                action = GameStart.instance.Input();
             }
+            BattleLoop();
         }
 
 
@@ -207,23 +205,23 @@ namespace TeamProject28
                     }
                 }
             }
-
-
         }
-
-
-
 
         public void EndBattle(bool victory)
         {
+            Console.Clear();
             Console.WriteLine("Battle!! - Result\n");
+            int beforeExp = player.exp;
+            int beforeLevel = player.level;
 
             if (victory)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Victory\n");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"학원에서 과제 {monsters.Count}마리를 잡았습니다.\n");
+                Console.WriteLine($"학원에서 과제 {monsters.Count}개를 풀었습니다.\n");
+
+                GetExp();
             }
             else
             {
@@ -232,8 +230,17 @@ namespace TeamProject28
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
-            Console.WriteLine($"Lv.{player.level} {player.name}");
-            Console.WriteLine($"HP {player.maxTime} -> {player.currentTime}\n");
+            Console.Write($"Lv.{beforeLevel} {player.name}");
+            if ( player.level > beforeLevel )
+            {
+                Console.WriteLine($" -> Lv.{ player.level} { player.name}");
+            }
+            else
+            {
+                Console.WriteLine();
+            }
+            Console.WriteLine($"HP {player.maxTime} -> {player.currentTime}");
+            Console.WriteLine($"exp {beforeExp} -> {player.exp}\n");
             Console.WriteLine("0. 다음\n");
 
             int input = GameStart.instance.Input();
@@ -245,10 +252,43 @@ namespace TeamProject28
                 }
                 else
                 {
-                    GameStart.instance.ActionSelect(); // 승리 후 다음 선택
+                    GameStart.instance.Start(); // 승리 후 다음 선택
                 }
             }
             Console.Clear();
+        }
+
+        public void GetExp()
+        {
+            int exp = 0;
+            foreach (Monster monster in monsters)
+            {
+                exp += monster.exp;
+            }
+            player.exp += exp;
+
+            if (player.exp >= 100)
+            {
+                player.level = 5;
+                player.IQ += 0.5;
+                player.focus += 1;
+                player.job = Player.Job.담임매니저;
+            } 
+            else if (player.exp >= 65)
+            {
+                player.level = 4;
+                player.job = Player.Job.튜터;
+            }
+            else if (player.exp >= 35)
+            {
+                player.level = 3;
+                player.job = Player.Job.튜터;
+            }
+            else if (player.exp >= 10)
+            {
+                player.level = 2;
+                player.job = Player.Job.수강생;
+            }
         }
 
 
