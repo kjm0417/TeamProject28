@@ -16,7 +16,8 @@ namespace TeamProject28
         public Job job;
         public int IQ;
         public int focus;
-        public int time;
+        public int maxTime;
+        public int currentTime;
         public int gold;
 
         public Player()
@@ -26,7 +27,8 @@ namespace TeamProject28
             this.job = Job.수강생;
             this.IQ = 10;
             this.focus = 5;
-            this.time = 100;
+            this.maxTime = 100;
+            this.currentTime = maxTime;
             this.gold = 1500;
         }
 
@@ -50,7 +52,7 @@ namespace TeamProject28
             Console.WriteLine("{0} ( {1} )", name, job);
             Console.WriteLine("IQ : {0}", IQ);
             Console.WriteLine("집중력 : {0}", focus);
-            Console.WriteLine("시간 : {0}", time);
+            Console.WriteLine("시간 : {0}", currentTime);
             Console.WriteLine("Gold : {0}", gold);
             Console.WriteLine();
 
@@ -79,5 +81,6 @@ namespace TeamProject28
 
             Console.Clear();
         }
+
     }
 }
