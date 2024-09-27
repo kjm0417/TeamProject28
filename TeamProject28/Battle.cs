@@ -8,8 +8,9 @@ using TeamProject28.GameManager;
 
 namespace TeamProject28
 {
-    internal class Battle : Player
+    internal class Battle
     {
+        public Player player;
         public static int stage = 1;
         Random random = new Random();
 
@@ -23,6 +24,7 @@ namespace TeamProject28
 
         public void Start()
         {
+            player = GameStart.instance.player;
             monsters.Clear();
             if (stage % 5 == 0)
             {
@@ -55,8 +57,8 @@ namespace TeamProject28
 
             // 내정보
             Console.WriteLine("[내정보]");
-            Console.WriteLine("Lv.{0}\t{1} ({2})", level, name, job);
-            Console.WriteLine("TIME {0}/100\n", maxTime);
+            Console.WriteLine("Lv.{0}\t{1} ({2})", player.level, player.name, player.job);
+            Console.WriteLine("TIME {0}/100\n", player.maxTime);
 
             Console.WriteLine("1. 과제하기");
             Console.Write("\n원하시는 행동을 입력해주세요 입력해주세요\n >>");
@@ -91,8 +93,8 @@ namespace TeamProject28
             }
 
             Console.WriteLine("\n[내정보]");
-            Console.WriteLine($"Lv. {level}  {job}");
-            Console.WriteLine($"Time {maxTime}/{currentTime}");
+            Console.WriteLine($"Lv. {player.level} {player.name} ({player.job})");
+            Console.WriteLine($"Time {player.currentTime}/{player.maxTime}");
             Console.WriteLine("\n0. 취소\n");
 
             Console.Write("대상을 선택해주세요.\n>>");
@@ -125,9 +127,9 @@ namespace TeamProject28
             else
             {
                 // 공격력 계산 (10% 오차 적용)
-                double variance = IQ * 0.1; //오차 계산
-                double minAttack = Math.Ceiling(IQ - variance); // Math.Ceiling 하기 위해 사용 double일 때 사용가능
-                double maxAttack = Math.Ceiling(IQ + variance);
+                double variance = player.IQ * 0.1; //오차 계산
+                double minAttack = Math.Ceiling(player.IQ - variance); // Math.Ceiling 하기 위해 사용 double일 때 사용가능
+                double maxAttack = Math.Ceiling(player.IQ + variance);
                 int finalAttackPower = random.Next((int)minAttack, (int)maxAttack + 1);
 
                 // 몬스터 체력 감소
@@ -136,7 +138,7 @@ namespace TeamProject28
 ;
                 Console.Clear();
                 Console.WriteLine("Battle!!!\n");
-                Console.WriteLine($"{name}의 공격!");
+                Console.WriteLine($"{GameStart.instance.player.name}의 공격!");
                 Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name} 을(를) 맞췄습니다.  [데미지 : {finalAttackPower}]");
                 Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}");
                 Console.WriteLine($"Hp. {selectMonster.time} ->{(selectMonster.time<0?"Dead": monsterCurrentTime)}");
