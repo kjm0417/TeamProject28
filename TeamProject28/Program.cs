@@ -1,4 +1,5 @@
-﻿using TeamProject28.GameManager;
+﻿using System.Numerics;
+using TeamProject28.GameManager;
 using static TeamProject28.Player;
 
 namespace TeamProject28
@@ -8,6 +9,7 @@ namespace TeamProject28
         static void Main(string[] args)
         {
             GameStart gameStart = new GameStart();
+            gameStart.player.name = Intro.IntroScene();
             gameStart.Start();
         }
 
