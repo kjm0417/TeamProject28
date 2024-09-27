@@ -14,11 +14,11 @@ namespace TeamProject28
         public static int stage = 1;
         Random random = new Random();
 
-        public static Monster easyMonster = new Monster(MonsterType.Easy);
-        public static Monster normalMonster = new Monster(MonsterType.Normal);
-        public static Monster hardMonster = new Monster(MonsterType.Hard);
-        public static Monster bossMonster = new Monster(MonsterType.Boss);
-        public Monster[] monsterList = { easyMonster, normalMonster, hardMonster, bossMonster };
+        //public static Monster easyMonster = new Monster(MonsterType.Easy);
+        //public static Monster normalMonster = new Monster(MonsterType.Normal);
+        //public static Monster hardMonster = new Monster(MonsterType.Hard);
+        //public static Monster bossMonster = new Monster(MonsterType.Boss);
+        //public Monster[] monsterList = { easyMonster, normalMonster, hardMonster, bossMonster };
 
         public List<Monster> monsters = new List<Monster>();
 
@@ -28,68 +28,97 @@ namespace TeamProject28
             monsters.Clear();
             if (stage % 5 == 0)
             {
-                monsters.Add(monsterList[3]); //보스 몬스터 
+                monsters.Add(new Monster(MonsterType.Boss)); //보스 몬스터 
             }
-            else 
+            else
             {
-                for (int i = 0; i < random.Next(1, 4); i++)
+                int monsterCount = random.Next(1, 4);
+                for (int i = 0; i < monsterCount; i++)
                 {
-                    monsters.Add(monsterList[random.Next(0, 3)]); //일반 몬스터 
-                } 
+                    monsters.Add(new Monster((MonsterType)random.Next(0, 3))); // 0부터 2까지의 몬스터 타입 중 랜덤 선택
+                }
             }
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("공부!!\n");
             Console.ForegroundColor = ConsoleColor.White;
-            BattleSelect();
-        }
-
-
-        public void BattleSelect()
-        {
-            // 몬스터 정보
             foreach (Monster monster in monsters)
             {
-                Console.WriteLine("Lv.{0} {1}\t TIME {2}", monster.level, monster.name, monster.time);
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"Lv.{monster.level} {monster.name} HP {monster.maxTime}");
             }
-            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
 
-            // 내정보
-            Console.WriteLine("[내정보]");
-            Console.WriteLine("Lv.{0}\t{1} ({2})", player.level, player.name, player.job);
-            Console.WriteLine("TIME {0}/100\n", player.maxTime);
+            Console.WriteLine($"\n[내정보]\nLv.{player.level} {player.name} (전사)\nHP {player.currentTime}/{player.maxTime}\n");
+            Console.WriteLine("1. 공격\n");
 
-            Console.WriteLine("1. 과제하기");
-            Console.Write("\n원하시는 행동을 입력해주세요 입력해주세요\n >>");
-            int input = GameStart.instance.Input();
+            // 전투 행동 선택
+            Console.WriteLine("원하시는 행동을 입력해주세요.");
+            Console.Write(">> ");
+            int action = GameStart.instance.Input();
 
-            while (input < 1 || input > 1)
+            // 행동에 따라 전투 시작
+            if (action == 1)
+            {
+                BattleLoop(); // 턴제 전투 루프 시작
+            }
+            else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("잘못된 입력입니다");
+                Console.WriteLine("잘못된 입력입니다.");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine();
-                input = GameStart.instance.Input();
-            }
-
-            switch (input)
-            {
-                case 1:
-                    PlayerAttack();
-                    break;
             }
         }
+
+
+        public void BattleLoop()
+        {
+            // 전투가 끝날 때까지 계속 반복
+            while (true)
+            {
+                Console.Clear();
+                // 플레이어 턴
+                Console.WriteLine("플레이어 턴");
+                PlayerAttack(); // 플레이어가 적을 공격
+                Thread.Sleep(3000);
+
+
+                // 적이 모두 죽었는지 확인
+                bool allMonstersDead = monsters.All(monster => monster.currentTime <= 0);
+                if (allMonstersDead)
+                {
+                    Console.Clear();
+                    EndBattle(victory: true); // 승리
+                    break;
+                }
+
+                // 적의 턴
+                Console.WriteLine("적의 턴");
+                MonsterAttack(); // 적이 플레이어를 공격
+
+                Thread.Sleep(3000);
+                // 플레이어가 죽었는지 확인
+                if (player.currentTime <= 0)
+                {
+                    Console.Clear();
+                    EndBattle(victory: false); // 패배
+                    break;
+                }
+
+                ShowBattleStatus(); // 현재 상태 출력
+            }
+        }
+
 
         public void PlayerAttack()
         {
-            Console.Clear();
             Console.WriteLine("Battle!!");
 
-            for(int i =0; i<monsters.Count; i++)
+            for (int i = 0; i < monsters.Count; i++)
             {
                 Monster monster = monsters[i];
-                Console.WriteLine($"\n{i+1}. Lv. {monster.level} {monster.name}  TIme {monster.time}");
+                Console.WriteLine($"\n{i + 1}. Lv. {monster.level} {monster.name}  TIme {monster.currentTime}");
             }
 
             Console.WriteLine("\n[내정보]");
@@ -109,7 +138,7 @@ namespace TeamProject28
                 Console.WriteLine();
                 target = GameStart.instance.Input();
             }
-            else if (target ==0)
+            else if (target == 0)
             {
                 GameStart.instance.ActionSelect();
             }
@@ -117,7 +146,7 @@ namespace TeamProject28
             //선택한 몬스터 번호 받기
             Monster selectMonster = monsters[target - 1];
 
-            if (selectMonster.time <= 0)
+            if (selectMonster.currentTime <= 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다.");
@@ -130,45 +159,127 @@ namespace TeamProject28
                 double variance = player.IQ * 0.1; //오차 계산
                 double minAttack = Math.Ceiling(player.IQ - variance); // Math.Ceiling 하기 위해 사용 double일 때 사용가능
                 double maxAttack = Math.Ceiling(player.IQ + variance);
-                int finalAttackPower = random.Next((int)minAttack, (int)maxAttack + 1);
+                int playerAttack = random.Next((int)minAttack, (int)maxAttack + 1);
 
                 // 몬스터 체력 감소
-                int monsterCurrentTime = selectMonster.time;
-                monsterCurrentTime = selectMonster.time - finalAttackPower;
-;
+
                 Console.Clear();
                 Console.WriteLine("Battle!!!\n");
-                Console.WriteLine($"{GameStart.instance.player.name}의 공격!");
-                Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name} 을(를) 맞췄습니다.  [데미지 : {finalAttackPower}]");
+                Console.WriteLine($"{player.name}의 공격!");
+                Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name} 을(를) 맞췄습니다.  [데미지 : {playerAttack}]");
                 Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}");
-                Console.WriteLine($"Hp. {selectMonster.time} ->{(selectMonster.time<0?"Dead": monsterCurrentTime)}");
+                Console.WriteLine($"Hp. {selectMonster.currentTime} ->{(selectMonster.currentTime- playerAttack < 0 ? "Dead" : selectMonster.currentTime- playerAttack)}");
+                selectMonster.currentTime -= playerAttack;
 
+
+                Console.Clear();
+                Console.WriteLine("Battle!!!\n");
+                Console.WriteLine($"{player.name}의 공격!");
+                Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}을(를) 맞췄습니다. [데미지 : {playerAttack}]");
+                Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}");
+                Console.WriteLine($"HP {selectMonster.currentTime}/{selectMonster.maxTime}");
             }
         }
 
-        // 몬스터와 플레이어의 상태를 다시 출력해주는 메서드
-        public void ShowBattleStatus()
+        public void MonsterAttack()
         {
-            Console.WriteLine("**Battle 결과!!**\n");
 
-            // 몬스터 상태 출력
-            for (int i = 0; i < monsters.Count; i++)
+            Console.Clear();
+            Console.WriteLine("Battle!!");
+
+            foreach (Monster monster in monsters)
             {
-                var monster = monsters[i];
-                if (monster.time > 0)
+                double variance = monster.IQ * 0.1; //오차 계산
+                double minAttack = Math.Ceiling(monster.IQ - variance); // Math.Ceiling 하기 위해 사용 double일 때 사용가능
+                double maxAttack = Math.Ceiling(monster.IQ + variance);
+                int mosterAttack = random.Next((int)minAttack, (int)maxAttack + 1);
+
+                if (monster.currentTime > 0) // 살아있는 적만 공격
                 {
-                    Console.WriteLine("**{0}** Lv.{1} {2} HP {3}", i + 1, monster.level, monster.name, monster.time);
+                    player.currentTime -= mosterAttack;
+
+                    Console.WriteLine($"Lv. {monster.level} {monster.name} 이(가) 공격했습니다! [데미지: {mosterAttack}]");
+                    Console.WriteLine($"플레이어의 남은 TIME: {player.currentTime}/{player.maxTime}");
+
+                    if (player.currentTime <= 0)
+                    {
+                        Console.WriteLine($"{player.name}은(는) 죽었습니다...");
+                    }
+                }
+            }
+
+
+        }
+
+
+
+
+        public void EndBattle(bool victory)
+        {
+            Console.WriteLine("Battle!! - Result\n");
+
+            if (victory)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Victory\n");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"학원에서 과제 {monsters.Count}마리를 잡았습니다.\n");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You Lose\n");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            Console.WriteLine($"Lv.{player.level} {player.name}");
+            Console.WriteLine($"HP {player.maxTime} -> {player.currentTime}\n");
+            Console.WriteLine("0. 다음\n");
+
+            int input = GameStart.instance.Input();
+            if (input == 0)
+            {
+                if (!victory)
+                {
+                    //GameOver();
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine("**{0}** Lv.{1} {2} Dead", i + 1, monster.level, monster.name);
-                    Console.ForegroundColor = ConsoleColor.White;
+                    GameStart.instance.ActionSelect(); // 승리 후 다음 선택
+                }
+            }
+            Console.Clear();
+        }
+
+
+        public void ShowBattleStatus()
+        {
+            Console.WriteLine("현재 전투 상황:\n");
+
+            foreach (Monster monster in monsters)
+            {
+                if (monster.currentTime > 0)
+                {
+                    Console.WriteLine($"{monster.name} (Time {monster.currentTime})");
+                }
+                else
+                {
+                    Console.WriteLine($"{monster.name}는 죽었습니다.");
                 }
             }
 
-            Console.WriteLine("0. 다음");
+            Console.WriteLine($"\n{player.name}의 HP: {player.currentTime}/{player.maxTime}");
         }
+
+        // 게임 오버 처리
+        public void GameOver()
+        {
+            Console.Clear();
+            Console.WriteLine("플레이어가 죽었습니다.!");
+            GameStart.instance.ActionSelect();
+            // 게임 오버 후 처리 로직 추가
+        }
+
     }
 }
 
