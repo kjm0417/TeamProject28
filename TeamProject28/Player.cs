@@ -58,7 +58,7 @@ namespace TeamProject28
             Console.WriteLine("IQ : {0}", IQ);
             Console.WriteLine("집중력 : {0}", focus);
             Console.WriteLine("시간 : {0}", currentTime);
-            Console.WriteLine("마나 : {0}", mp);
+            Console.WriteLine("열정 : {0}", mp);
             Console.WriteLine("Gold : {0}", gold);
             Console.WriteLine();
 

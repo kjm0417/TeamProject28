@@ -36,8 +36,8 @@ namespace TeamProject28.GameManager
             if (instance == null)
             {
                 instance = this;
+                ItemList.Init();
             }
-            ItemList.Init();
             ActionSelect();
         }
 
@@ -83,6 +83,5 @@ namespace TeamProject28.GameManager
                     return;
             }
         }
-
     }
 }

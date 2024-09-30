@@ -10,7 +10,7 @@ namespace TeamProject28.Item
 {
     internal class ItemList
     {
-        public static int itemCount = 7;
+        public static int itemCount = 8;
         public static Item[] items = new Item[itemCount];
 
         public static void Init()
@@ -22,6 +22,7 @@ namespace TeamProject28.Item
             items[4] = new Item("노이즈캔슬링 이어폰", ItemType.focus, 10, "소음으로부터 나를 보호해주는 장비입니다.", 1400, 0, false);
             items[5] = new Item("독서실 책상", ItemType.focus, 15, "이 분위기라면 집중이 안 될 수가 없을 것 같습니다.", 2100, 0, false);
             items[6] = new Item("에너지드링크", ItemType.time, 30, "과제하는 시간을 효과적으로 올려주는 음료입니다.", 500, 3, false);
+            items[7] = new Item("열정드링크", ItemType.passion, 20, "열정! 열정! 열정!!!", 500, 3, false);
         }
     }
 }

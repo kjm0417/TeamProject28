@@ -42,9 +42,12 @@ namespace TeamProject28.Item
                         case ItemType.time:
                             Console.Write("시간");
                             break;
+                        case ItemType.passion:
+                            Console.Write("열정");
+                            break;
                     }
                     Console.Write($" + {item.status}\t| {item.description}");
-                    if (item.type == ItemType.time)
+                    if (item.type == ItemType.time || item.type == ItemType.passion)
                     {
                         Console.Write($" \t| 보유중 : {item.quantity}개");
                     }
@@ -74,6 +77,7 @@ namespace TeamProject28.Item
                     Equipment();
                     break;
                 case 0:
+                    ItemList.items = itemList;
                     GameStart.instance.Start();
                     return;
             }
@@ -95,7 +99,7 @@ namespace TeamProject28.Item
 
             foreach (Item item in itemList)
             {
-                if (item.quantity > 0 && item.type != ItemType.time)
+                if (item.quantity > 0 && item.type != ItemType.time && item.type != ItemType.passion)
                 {
                     items.Add(item);
 
@@ -116,12 +120,11 @@ namespace TeamProject28.Item
                         case ItemType.time:
                             Console.Write("시간");
                             break;
+                        case ItemType.passion:
+                            Console.Write("열정");
+                            break;
                     }
                     Console.Write($" + {item.status}\t| {item.description}");
-                    if (item.type == ItemType.time)
-                    {
-                        Console.Write($" \t| 보유중 : {item.quantity}개");
-                    }
                     Console.WriteLine();
                     i++;
                 }
