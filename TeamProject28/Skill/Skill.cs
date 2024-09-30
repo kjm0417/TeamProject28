@@ -24,9 +24,9 @@ namespace TeamProject28
     }
 
     //한명 적을 2배 피해 주는 기술
-    public class DoubleAttack : Skill
+    public class SuperPower : Skill
     {
-        public DoubleAttack() : base("해설 문제 보기", 1,15)
+        public SuperPower() : base("해설 문제 보기", 1,15)
         {
 
         }
@@ -46,9 +46,9 @@ namespace TeamProject28
             }
         }
 
-        public class MultiAttack : Skill
+        public class DoubleAttack : Skill
         {
-            public MultiAttack() : base("Multi Attack", 2, 15) { }
+            public DoubleAttack() : base("Multi Attack", 2, 15) { }
 
             public override void Use(Player player, List<Monster> targets)
             {

@@ -35,46 +35,46 @@ namespace TeamProject28
                 }
             }
 
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("공부!!\n");
-            Console.ForegroundColor = ConsoleColor.White;
-            foreach (Monster monster in monsters)
-            {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"Lv.{monster.level} {monster.name} HP {monster.maxTime}");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-
-            Console.WriteLine($"\n[내정보]\nLv.{player.level} {player.name} {player.job}\nHP {player.currentTime}/{player.maxTime}\n");
-            Console.WriteLine("1. 공격");
-            Console.WriteLine("2. 스킬\n");
-
-            // 전투 행동 선택
-            Console.WriteLine("원하시는 행동을 입력해주세요.");
-            Console.Write(">> ");
-            int action = GameStart.instance.Input();
-
-            // 행동에 따라 전투 시작
-            while (action < 1 || action > 1)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("잘못된 입력입니다.");
-                Console.ForegroundColor = ConsoleColor.White;
-                action = GameStart.instance.Input();
-            }
-                
-            switch (action)
-            {
-                case 1:
-                    BattleLoop();
-                    break;
-                case 2:
-                    //skill 관련 로직 제작
-                    break;
-            }
+            BattleLoop();
 
  
+        }
+
+
+        public void UseSkillMenu()
+        {
+            Console.WriteLine("\n사용할 스킬을 선택하세요:\n");
+
+            for (int i = 0; i < player.skills.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {player.skills[i].skillName} (Cost: {player.skills[i].manaCost} 열정)");
+            }
+            Console.WriteLine("0. 취소");
+
+            int skillIndex = GameStart.instance.Input() - 1;
+
+            if (skillIndex == -1)
+            {
+                Start(); // 취소하면 다시 전투 시작 메뉴로 이동
+            }
+            else if (skillIndex >= 0 && skillIndex < player.skills.Count)
+            {
+                Console.WriteLine("\n공격할 대상을 선택하세요:\n");
+                for (int i = 0; i < monsters.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. Lv. {monsters[i].level} {monsters[i].name} (HP: {monsters[i].currentTime})");
+                }
+                int targetIndex = GameStart.instance.Input() - 1;
+
+                if (targetIndex >= 0 && targetIndex < monsters.Count)
+                {
+                    player.UseSkill(skillIndex, new List<Monster> { monsters[targetIndex] });
+                    BattleLoop(); // 전투 루프로 다시 돌아감
+                }
+            }
+
+            // 다음 턴으로 이동
+            WaitForNextStep();
         }
 
 
@@ -117,6 +117,48 @@ namespace TeamProject28
             }
         }
 
+
+        public void PlayerTurn()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("공부!!\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            foreach (Monster monster in monsters)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"Lv.{monster.level} {monster.name} HP {monster.maxTime}");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine($"\n[내정보]\nLv.{player.level} {player.name} {player.job}\nHP {player.currentTime}/{player.maxTime}\n");
+            Console.WriteLine("1. 공격");
+            Console.WriteLine("2. 스킬\n");
+
+            // 전투 행동 선택
+            Console.WriteLine("원하시는 행동을 입력해주세요.");
+            Console.Write(">> ");
+            int action = GameStart.instance.Input();
+
+            // 행동에 따라 전투 시작
+            while (action < 1 || action > 2)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("잘못된 입력입니다.");
+                Console.ForegroundColor = ConsoleColor.White;
+                action = GameStart.instance.Input();
+            }
+
+            switch (action)
+            {
+                case 1:
+                    BattleLoop();
+                    break;
+                case 2:
+                    UseSkillMenu();
+                    break;
+            }
+        }
 
         public void PlayerAttack()
         {
