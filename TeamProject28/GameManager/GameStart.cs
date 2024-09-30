@@ -36,15 +36,16 @@ namespace TeamProject28.GameManager
                 instance = this;
             }
             ItemList.Init();
-            Console.Clear();
-            Console.WriteLine("스파르타 무한의 탑에 오신 여러분 환영합니다.");
-            Console.WriteLine("이곳에서 무한의 탑을 오르면서 높을 층을 갱신하는 게임입니다");
             ActionSelect();
         }
 
 
         public void ActionSelect()
         {
+            Console.Clear();
+            Console.WriteLine("스파르타 무한의 탑에 오신 여러분 환영합니다.");
+            Console.WriteLine("이곳에서 무한의 탑을 오르면서 높을 층을 갱신하는 게임입니다");
+
             Console.WriteLine("\n1. 상태 보기");
             Console.WriteLine("2. 인벤토리");
             Console.WriteLine("3. 전투 시작");
@@ -52,7 +53,7 @@ namespace TeamProject28.GameManager
             Console.Write("\n원하시는 행동을 입력해주세요\n >>");
             int input = Input();
 
-            while (input < 0 || input > 2)
+            while (input < 0 || input > 3)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다");
