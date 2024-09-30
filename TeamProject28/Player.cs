@@ -25,6 +25,7 @@ namespace TeamProject28
         public int currentPassion;
         public int gold;
         public int exp;
+<<<<<<< HEAD
         public List<Skill> skills;
 
         public Player()

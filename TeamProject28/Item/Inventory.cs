@@ -155,17 +155,27 @@ namespace TeamProject28.Item
                     {
                         if(item.type == items[input - 1].type && item != items[input - 1])
                         {
-                            item.isEquipped = false;
+                            item.isEquipped = false;                            
                         }
                     }
                     items[input - 1].isEquipped = !items[input - 1].isEquipped;
-                    if (items[input - 1].type == ItemType.IQ)
+
+                    player.IQ = player.baseIQ;
+                    player.focus = player.baseFocus;
+
+                    foreach(Item item in itemList)
                     {
-                        player.IQ = player.baseIQ + items[input - 1].status;
-                    }
-                    else
-                    {
-                        player.focus = player.baseFocus + items[input - 1].status;
+                        if (item.isEquipped)
+                        {
+                            if(item.type == ItemType.IQ)
+                            {
+                                player.IQ += item.status;
+                            }
+                            else
+                            {
+                                player.focus += item.status;
+                            }
+                        }
                     }
                     Equipment();
                     break;
@@ -272,7 +282,6 @@ namespace TeamProject28.Item
                     Console.WriteLine();
                     Thread.Sleep(2000);
                     DrinkPotion();
-                    break;
                     break;
             }
         }

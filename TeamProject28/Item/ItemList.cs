@@ -15,7 +15,7 @@ namespace TeamProject28.Item
 
         public static void Init()
         {
-            items[0] = new Item("스파르타 : 기초편", ItemType.IQ, 2, "기초부터 차근차근 알려주는 스파르타 강의입니다.", 600, 1, true);
+            items[0] = new Item("스파르타 : 기초편", ItemType.IQ, 2, "기초부터 차근차근 알려주는 스파르타 강의입니다.", 600, 1, false);
             items[1] = new Item("스파르타 : 심화편", ItemType.IQ, 4, "기본기를 다진 분들을 위한 심화편 스파르타 강의입니다.", 1500, 1, false);
             items[2] = new Item("스파르타 : 기출문제집", ItemType.IQ, 7, "강의를 마스터하신 분들에게 어울리는 기출문제집입니다.", 2400, 0, false);
             items[3] = new Item("잘 나오는 펜", ItemType.focus, 5, "적어도 펜이 안 나와서 집중이 안 되는 일은 없겠네요.", 700, 1, false);

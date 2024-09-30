@@ -37,6 +37,7 @@ namespace TeamProject28.GameManager
             {
                 instance = this;
                 ItemList.Init();
+                quest.Quest_Init();
             }
             ActionSelect();
         }
@@ -56,7 +57,7 @@ namespace TeamProject28.GameManager
             Console.Write("\n원하시는 행동을 입력해주세요\n >>");
             int input = Input();
 
-            while (input < 0 || input > 3)
+            while (input < 0 || input > 4)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다");
