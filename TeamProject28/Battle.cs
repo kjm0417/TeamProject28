@@ -79,7 +79,7 @@ namespace TeamProject28
                 // 플레이어 턴
                 Console.WriteLine("플레이어 턴");
                 PlayerAttack(); // 플레이어가 적을 공격
-                Thread.Sleep(3000);
+                //Thread.Sleep(3000);
 
 
                 // 적이 모두 죽었는지 확인
@@ -95,7 +95,7 @@ namespace TeamProject28
                 Console.WriteLine("적의 턴");
                 MonsterAttack(); // 적이 플레이어를 공격
 
-                Thread.Sleep(3000);
+                //Thread.Sleep(3000);
                 // 플레이어가 죽었는지 확인
                 if (player.currentTime <= 0)
                 {
@@ -116,7 +116,7 @@ namespace TeamProject28
             for (int i = 0; i < monsters.Count; i++)
             {
                 Monster monster = monsters[i];
-                Console.WriteLine($"\n{i + 1}. Lv. {monster.level} {monster.name}  TIme {monster.currentTime}");
+                Console.WriteLine($"\n{i + 1}. Lv. {monster.level} {monster.name}  TIme {(monster.currentTime<=0?"Dead": monster.currentTime)}");
             }
 
             Console.WriteLine("\n[내정보]");
@@ -159,23 +159,61 @@ namespace TeamProject28
                 double maxAttack = Math.Ceiling(player.IQ + variance);
                 int playerAttack = random.Next((int)minAttack, (int)maxAttack + 1);
 
-                // 몬스터 체력 감소
+                //치명타 공격
+                int critical = random.Next(0, 100);
+                int criticalAttack = playerAttack * 160 / 100;
 
-                Console.Clear();
-                Console.WriteLine("Battle!!!\n");
-                Console.WriteLine($"{player.name}의 공격!");
-                Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name} 을(를) 맞췄습니다.  [데미지 : {playerAttack}]");
-                Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}");
-                Console.WriteLine($"Hp. {selectMonster.currentTime} ->{(selectMonster.currentTime- playerAttack < 0 ? "Dead" : selectMonster.currentTime- playerAttack)}");
-                selectMonster.currentTime -= playerAttack;
+                //공격 미스
+                int miss = random.Next(0, 100);
+
+                if(miss<10)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Battle!!!\n");
+                    Console.WriteLine($"{player.name}의 공격!");
+                    Console.WriteLine($"Lv {selectMonster.level} {selectMonster.name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
+                }
+                else
+                {
+                    if (criticalAttack < 16)
+                    {
+                        // 몬스터 체력 감소
+                        selectMonster.currentTime -= criticalAttack;
+
+                        // 출력
+                        Console.Clear();
+                        Console.WriteLine("Battle!!!\n");
+                        Console.WriteLine($"{player.name}의 공격!");
+                        Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}을(를) 맞췄습니다. [데미지 : {criticalAttack}] - 치명타 공격!!");
+
+                    }
+                    else
+                    {
+                        // 몬스터 체력 감소
+                        selectMonster.currentTime -= playerAttack;
+
+                        // 출력
+                        Console.Clear();
+                        Console.WriteLine("Battle!!!\n");
+                        Console.WriteLine($"{player.name}의 공격!");
+                        Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}을(를) 맞췄습니다. [데미지 : {playerAttack}]");
+                    }
+                }
 
 
-                Console.Clear();
-                Console.WriteLine("Battle!!!\n");
-                Console.WriteLine($"{player.name}의 공격!");
-                Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}을(를) 맞췄습니다. [데미지 : {playerAttack}]");
-                Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}");
-                Console.WriteLine($"HP {selectMonster.currentTime}/{selectMonster.maxTime}");
+                //사망 처리
+                if (selectMonster.currentTime <= 0) // 몬스터가 죽었을 때 처리
+                {
+                    Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}은(는) 죽었습니다.");
+                    selectMonster.currentTime = 0; // 체력을 0으로 설정
+                }
+                else
+                {
+                    Console.WriteLine($"Hp. {selectMonster.currentTime}/{selectMonster.maxTime}");
+                }
+
+                // 정보를 확인하고 다음 단계로 이동
+                WaitForNextStep();
             }
         }
 
@@ -205,6 +243,8 @@ namespace TeamProject28
                     }
                 }
             }
+
+            WaitForNextStep();
         }
 
         public void EndBattle(bool victory)
@@ -309,6 +349,21 @@ namespace TeamProject28
             }
 
             Console.WriteLine($"\n{player.name}의 HP: {player.currentTime}/{player.maxTime}");
+        }
+
+        public void WaitForNextStep()
+        {
+            Console.WriteLine("\n1. 계속하기\n");
+
+            int input = GameStart.instance.Input();
+            while (input != 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("잘못된 입력입니다. 1을 입력해주세요.");
+                Console.ForegroundColor = ConsoleColor.White;
+                input = GameStart.instance.Input();
+            }
+
         }
 
         // 게임 오버 처리
