@@ -28,6 +28,7 @@ namespace TeamProject28
 <<<<<<< HEAD
         public List<Skill> skills;
 
+
         public Player()
         {
             this.level = 1;
