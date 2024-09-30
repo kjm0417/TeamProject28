@@ -51,7 +51,8 @@ namespace TeamProject28
             Console.ForegroundColor = ConsoleColor.White;
 
             Console.WriteLine($"\n[내정보]\nLv.{player.level} {player.name} {player.job}\nHP {player.currentTime}/{player.maxTime}\n");
-            Console.WriteLine("1. 공격\n");
+            Console.WriteLine("1. 공격");
+            Console.WriteLine("2. 스킬\n");
 
             // 전투 행동 선택
             Console.WriteLine("원하시는 행동을 입력해주세요.");
@@ -66,10 +67,22 @@ namespace TeamProject28
                 Console.ForegroundColor = ConsoleColor.White;
                 action = GameStart.instance.Input();
             }
-            BattleLoop();
+                
+            switch (action)
+            {
+                case 1:
+                    BattleLoop();
+                    break;
+                case 2:
+                    //skill 관련 로직 제작
+                    break;
+            }
+
+ 
         }
 
 
+        //battle 관련 토글
         public void BattleLoop()
         {
             // 전투가 끝날 때까지 계속 반복
@@ -298,39 +311,7 @@ namespace TeamProject28
             Console.Clear();
         }
 
-        public void GetExp()
-        {
-            int exp = 0;
-            foreach (Monster monster in monsters)
-            {
-                exp += monster.exp;
-            }
-            player.exp += exp;
-
-            if (player.exp >= 100)
-            {
-                player.level = 5;
-                player.IQ += 0.5;
-                player.focus += 1;
-                player.job = Player.Job.담임매니저;
-            } 
-            else if (player.exp >= 65)
-            {
-                player.level = 4;
-                player.job = Player.Job.튜터;
-            }
-            else if (player.exp >= 35)
-            {
-                player.level = 3;
-                player.job = Player.Job.튜터;
-            }
-            else if (player.exp >= 10)
-            {
-                player.level = 2;
-                player.job = Player.Job.수강생;
-            }
-        }
-
+      
 
         public void ShowBattleStatus()
         {
@@ -364,6 +345,39 @@ namespace TeamProject28
                 input = GameStart.instance.Input();
             }
 
+        }
+
+        public void GetExp()
+        {
+            int exp = 0;
+            foreach (Monster monster in monsters)
+            {
+                exp += monster.exp;
+            }
+            player.exp += exp;
+
+            if (player.exp >= 100)
+            {
+                player.level = 5;
+                player.IQ += 0.5;
+                player.focus += 1;
+                player.job = Player.Job.담임매니저;
+            }
+            else if (player.exp >= 65)
+            {
+                player.level = 4;
+                player.job = Player.Job.튜터;
+            }
+            else if (player.exp >= 35)
+            {
+                player.level = 3;
+                player.job = Player.Job.튜터;
+            }
+            else if (player.exp >= 10)
+            {
+                player.level = 2;
+                player.job = Player.Job.수강생;
+            }
         }
 
         // 게임 오버 처리
