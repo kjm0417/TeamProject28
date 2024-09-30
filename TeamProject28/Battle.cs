@@ -14,12 +14,6 @@ namespace TeamProject28
         public static int stage = 1;
         Random random = new Random();
 
-        //public static Monster easyMonster = new Monster(MonsterType.Easy);
-        //public static Monster normalMonster = new Monster(MonsterType.Normal);
-        //public static Monster hardMonster = new Monster(MonsterType.Hard);
-        //public static Monster bossMonster = new Monster(MonsterType.Boss);
-        //public Monster[] monsterList = { easyMonster, normalMonster, hardMonster, bossMonster };
-
         public List<Monster> monsters = new List<Monster>();
 
         public void Start()

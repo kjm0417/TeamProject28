@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamProject28
 {
-    internal class Intro
+    public class Intro
     {
         public static string IntroScene()
         {

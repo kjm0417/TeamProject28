@@ -8,7 +8,7 @@ using TeamProject28.GameManager;
 
 namespace TeamProject28
 {
-    internal class Player 
+    public class Player 
     {
        
         public int level;
