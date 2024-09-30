@@ -37,6 +37,7 @@ namespace TeamProject28.GameManager
             {
                 instance = this;
                 ItemList.Init();
+                quest.Quest_Init();
             }
             ActionSelect();
         }

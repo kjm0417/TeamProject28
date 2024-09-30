@@ -10,13 +10,18 @@ namespace TeamProject28.Quest_Folder
     public class Quest
     {
         public List<QuestList> questList = new List<QuestList>();
-        public void OpenQuest()
+
+        public void Quest_Init()
         {
             questList.Add(new Quest1());
             questList.Add(new Quest2());
 
             questList[0].Quest_Init();
             questList[1].Quest_Init();
+        }
+
+        public void OpenQuest()
+        {
 
             // 이전 창 지우기
             Console.Clear();
@@ -117,15 +122,15 @@ namespace TeamProject28.Quest_Folder
             switch (input)
             {
                 case 1:
-                    questList[num].is_Quest = true;
+                    {
+                        questList[num].is_Quest = true;
+                    }
                     break;
-                case 2:
-                    Quest_Open(input - 1);
-                    break;
-                case 0:
-                    GameStart.instance.Start();
+                default:
                     return;
             }
+
+            GameStart.instance.Start();
         }
     }
 }
