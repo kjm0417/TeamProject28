@@ -25,7 +25,6 @@ namespace TeamProject28
         public int currentPassion;
         public int gold;
         public int exp;
-<<<<<<< HEAD
         public List<Skill> skills;
 
 
@@ -74,10 +73,7 @@ namespace TeamProject28
         }
 
         //플레이어가 전투중에 스킬을 사용
-        public void PlayerTurn()
-        {
 
-        }
 
         // 상태 보기
         public void PlayerStats()
