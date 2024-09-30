@@ -24,7 +24,6 @@ namespace TeamProject28
         public int currentPassion;
         public int gold;
         public int exp;
-        public int mp;
 
         public Player()
         {
