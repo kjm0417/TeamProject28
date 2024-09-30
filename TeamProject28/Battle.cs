@@ -356,26 +356,40 @@ namespace TeamProject28
             }
             player.exp += exp;
 
-            if (player.exp >= 100)
+            if (player.exp >= 100 && player.level < 5)
             {
                 player.level = 5;
+                player.baseIQ += 0.5;
+                player.baseFocus += 1;
                 player.IQ += 0.5;
                 player.focus += 1;
                 player.job = Player.Job.담임매니저;
             }
-            else if (player.exp >= 65)
+            else if (player.exp >= 65 && player.level < 4)
             {
                 player.level = 4;
+                player.baseIQ += 0.5;
+                player.baseFocus += 1;
+                player.IQ += 0.5;
+                player.focus += 1;
                 player.job = Player.Job.튜터;
             }
-            else if (player.exp >= 35)
+            else if (player.exp >= 35 && player.level < 3)
             {
                 player.level = 3;
+                player.baseIQ += 0.5;
+                player.baseFocus += 1;
+                player.IQ += 0.5;
+                player.focus += 1;
                 player.job = Player.Job.튜터;
             }
-            else if (player.exp >= 10)
+            else if (player.exp >= 10 && player.level < 2)
             {
                 player.level = 2;
+                player.baseIQ += 0.5;
+                player.baseFocus += 1;
+                player.IQ += 0.5;
+                player.focus += 1;
                 player.job = Player.Job.수강생;
             }
         }
