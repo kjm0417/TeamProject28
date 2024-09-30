@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -75,8 +76,12 @@ namespace TeamProject28.GameManager
                     inventory.OpenInventory();
                     break;
                 case 3:
-                    battle.Start();
-                    break;
+                    {
+                        if (quest.questList[0].is_Quest == true)
+                            quest.questList[0].tmp_goal+=1;
+                        battle.Start();
+                        break;
+                    }
                 case 4:
                     quest.OpenQuest();
                     break;
