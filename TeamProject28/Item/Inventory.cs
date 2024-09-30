@@ -10,9 +10,11 @@ namespace TeamProject28.Item
 {
     internal class Inventory
     {
+        Player player;
         public Item[] itemList = ItemList.items;
         public void OpenInventory()
         {
+            player = GameStart.instance.player;
             // 이전 창 지우기
             Console.Clear();
             //상태창 띄우기
@@ -42,9 +44,12 @@ namespace TeamProject28.Item
                         case ItemType.time:
                             Console.Write("시간");
                             break;
+                        case ItemType.passion:
+                            Console.Write("열정");
+                            break;
                     }
                     Console.Write($" + {item.status}\t| {item.description}");
-                    if (item.type == ItemType.time)
+                    if (item.type == ItemType.time || item.type == ItemType.passion)
                     {
                         Console.Write($" \t| 보유중 : {item.quantity}개");
                     }
@@ -53,12 +58,13 @@ namespace TeamProject28.Item
             }
 
             Console.WriteLine("\n1. 장착 관리");
+            Console.WriteLine("2. 포션 마시기");
             Console.WriteLine("0. 돌아가기");
             Console.Write("\n원하시는 행동을 입력해주세요\n >>");
 
             int input = GameStart.instance.Input();
 
-            while (input < 0 || input > 1)
+            while (input < 0 || input > 2)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다");
@@ -73,7 +79,12 @@ namespace TeamProject28.Item
                     //장착관리
                     Equipment();
                     break;
+                case 2:
+                    //포션 마시기
+                    DrinkPotion();
+                    break;
                 case 0:
+                    ItemList.items = itemList;
                     GameStart.instance.Start();
                     return;
             }
@@ -95,7 +106,7 @@ namespace TeamProject28.Item
 
             foreach (Item item in itemList)
             {
-                if (item.quantity > 0 && item.type != ItemType.time)
+                if (item.quantity > 0 && item.type != ItemType.time && item.type != ItemType.passion)
                 {
                     items.Add(item);
 
@@ -113,15 +124,8 @@ namespace TeamProject28.Item
                         case ItemType.focus:
                             Console.Write("집중력");
                             break;
-                        case ItemType.time:
-                            Console.Write("시간");
-                            break;
                     }
                     Console.Write($" + {item.status}\t| {item.description}");
-                    if (item.type == ItemType.time)
-                    {
-                        Console.Write($" \t| 보유중 : {item.quantity}개");
-                    }
                     Console.WriteLine();
                     i++;
                 }
@@ -155,7 +159,120 @@ namespace TeamProject28.Item
                         }
                     }
                     items[input - 1].isEquipped = !items[input - 1].isEquipped;
+                    if (items[input - 1].type == ItemType.IQ)
+                    {
+                        player.IQ = player.baseIQ + items[input - 1].status;
+                    }
+                    else
+                    {
+                        player.focus = player.baseFocus + items[input - 1].status;
+                    }
                     Equipment();
+                    break;
+            }
+        }
+
+        public void DrinkPotion()
+        {
+            int i = 0;
+            List<Item> items = new List<Item>();
+
+            // 이전 창 지우기
+            Console.Clear();
+            //상태창 띄우기
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("회복");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("포션을 통해 시간과 열정을 회복할 수 있습니다.");
+            Console.WriteLine();
+
+            foreach (Item item in itemList)
+            {
+                if (item.type == ItemType.time || item.type == ItemType.passion)
+                {
+                    items.Add(item);
+
+                    Console.Write((i + 1) + ". ");
+                    Console.Write(item.name + "\t| ");
+                    switch (item.type)
+                    {
+                        case ItemType.time:
+                            Console.Write("시간");
+                            break;
+                        case ItemType.passion:
+                            Console.Write("열정");
+                            break;
+                    }
+                    Console.Write($" + {item.status}\t| {item.description}");
+                    Console.Write($" \t| 보유중 : {item.quantity}개");
+                    Console.WriteLine();
+                    i++;
+                }
+            }
+
+            Console.WriteLine("\n0. 돌아가기");
+            Console.Write("\n원하시는 행동을 입력해주세요\n >>");
+
+            int input = GameStart.instance.Input();
+
+            while (input < 0 || input > items.Count)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("잘못된 입력입니다");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
+                input = GameStart.instance.Input();
+            }
+
+            switch (input)
+            {
+                case 0:
+                    OpenInventory();
+                    return;
+                case 1:
+                    if (ItemList.items[6].quantity <= 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("포션이 부족합니다.");
+                    }
+                    else
+                    {
+                        ItemList.items[6].quantity -= 1;
+                        player.currentTime += 30;
+                        if (player.currentTime > player.maxTime)
+                        {
+                            player.currentTime = player.maxTime;
+                        }                        
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("회복을 완료했습니다.");
+                    }
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine();
+                    Thread.Sleep(2000);
+                    DrinkPotion();
+                    break;
+                case 2:
+                    if (ItemList.items[7].quantity <= 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("포션이 부족합니다.");
+                    }
+                    else
+                    {
+                        ItemList.items[7].quantity -= 1;
+                        player.currentPassion += 30;
+                        if (player.currentPassion > player.maxPassion)
+                        {
+                            player.currentPassion = player.maxPassion;
+                        }
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("회복을 완료했습니다.");
+                    }
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine();
+                    Thread.Sleep(2000);
+                    DrinkPotion();
+                    break;
                     break;
             }
         }

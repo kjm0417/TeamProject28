@@ -12,7 +12,5 @@ namespace TeamProject28
             gameStart.player.name = Intro.IntroScene();
             gameStart.Start();
         }
-
-        
     }
 }

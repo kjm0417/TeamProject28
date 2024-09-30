@@ -14,10 +14,14 @@ namespace TeamProject28
         public int level;
         public string name;
         public Job job;
+        public double baseIQ;
         public double IQ;
+        public int baseFocus;
         public int focus;
         public int maxTime;
         public int currentTime;
+        public int maxPassion;
+        public int currentPassion;
         public int gold;
         public int exp;
         public int mp;
@@ -27,13 +31,16 @@ namespace TeamProject28
             this.level = 1;
             this.name = "스파르타";
             this.job = Job.수강생;
+            this.baseIQ = 10;
             this.IQ = 10;
+            this.baseFocus = 5;
             this.focus = 5;
             this.maxTime = 100;
             this.currentTime = maxTime;
+            this.maxPassion = 50;
+            this.currentPassion = maxPassion;
             this.gold = 1500;
             this.exp = 0;
-            this.mp = 50;
         }
 
         public enum Job { 수강생, 튜터, 담임매니저 }
@@ -58,7 +65,7 @@ namespace TeamProject28
             Console.WriteLine("IQ : {0}", IQ);
             Console.WriteLine("집중력 : {0}", focus);
             Console.WriteLine("시간 : {0}", currentTime);
-            Console.WriteLine("마나 : {0}", mp);
+            Console.WriteLine("열정 : {0}", currentPassion);
             Console.WriteLine("Gold : {0}", gold);
             Console.WriteLine();
 
