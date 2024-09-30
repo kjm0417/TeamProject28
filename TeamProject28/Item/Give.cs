@@ -15,7 +15,7 @@ namespace TeamProject28.Item
             int sum = 0;
             foreach (Monster monster in monsters)
             {
-                sum += monster.level * 300;
+                sum += monster.level * 100;
                 if(monster.level == 5)
                 {
                     sum += 1000;
@@ -27,24 +27,28 @@ namespace TeamProject28.Item
 
         public void GiveItem()
         {
+            // 포션 획득 확률
             Random random = new Random();
             int temp = Battle.stage;
             int timePotion = 0;
             int passionPotion = 0;
-            while (temp < 10)
+            while (temp > 5)
             {
                 timePotion++;
                 passionPotion++;
-                temp -= 10;
+                temp -= 5;
             }
-            if (random.Next(0, 10) < temp)
+            if (random.Next(0, 5) < temp)
             {
                 timePotion++;
             }
-            if (random.Next(0, 10) < temp)
+            if (random.Next(0, 5) < temp)
             {
                 passionPotion++;
             }
+
+            ItemList.items[6].quantity += timePotion;
+            ItemList.items[7].quantity += passionPotion;
 
             Console.WriteLine("에너지드링크 - {0}", timePotion);
             Console.WriteLine("열정드링크 - {0}", passionPotion);
@@ -55,26 +59,33 @@ namespace TeamProject28.Item
             Random random = new Random();
             int temp = Battle.stage + 5;
 
+            // IQ 템 획득 확률
             if(random.Next(0, 5) < temp % 5)
             {
-                for (int i = 0; i < ItemList.itemCount; i++)
+                for (int i = 1; i <= ItemList.itemCount; i++)
                 {
-                    if (ItemList.items[i].price < (temp / 5) * 1000 && ItemList.items[i].type == ItemType.IQ)
+                    int j = ItemList.itemCount - i;
+                    if (ItemList.items[j].price < (temp / 5) * 1000 && ItemList.items[j].type == ItemType.IQ)
                     {
-                        ItemList.items[i].quantity++;
-                    }
-                    
+                        ItemList.items[j].quantity++;
+                        Console.WriteLine($"{ ItemList.items[j].name } - 1");
+                        break;
+                    }                    
                 }
             }
+
+            // 집중력 템 획득 확률
             if (random.Next(0, 5) < temp % 5)
             {
-                for (int i = 0; i < ItemList.itemCount; i++)
+                for (int i = 1; i <= ItemList.itemCount; i++)
                 {
-                    if (ItemList.items[i].price < (temp / 5) * 1000 && ItemList.items[i].type == ItemType.focus)
+                    int j = ItemList.itemCount - i;
+                    if (ItemList.items[j].price < (temp / 5) * 1000 && ItemList.items[j].type == ItemType.focus)
                     {
-                        ItemList.items[i].quantity++;
+                        ItemList.items[j].quantity++;
+                        Console.WriteLine($"{ItemList.items[j].name} - 1");
+                        break;
                     }
-
                 }
             }
         }
