@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TeamProject28.GameManager;
+using static TeamProject28.SuperPower;
 
 namespace TeamProject28
 {
@@ -24,7 +25,7 @@ namespace TeamProject28
         public int currentPassion;
         public int gold;
         public int exp;
-        public int mp;
+        public List<Skill> skills;
 
         public Player()
         {
@@ -41,10 +42,40 @@ namespace TeamProject28
             this.currentPassion = maxPassion;
             this.gold = 1500;
             this.exp = 0;
+            skills = new List<Skill> {new SuperPower(), new DoubleAttack(), new AttackBuff(), new Heal()};
         }
 
         public enum Job { 수강생, 튜터, 담임매니저 }
 
+
+        //플레이어가 스킬을 사용하기 위한 구현
+        //스킬에 대한 배열 가져오기 skill가져와서 사용해야한다, 스킬 코르기 위한 int
+        public void UseSkill(int skillindex, List<Monster> target) 
+        {
+            if (skillindex >= 0 && skillindex < skills.Count)
+            {
+                Skill selectedSkill = skills[skillindex];
+                if (currentPassion >= selectedSkill.manaCost)
+                {
+                    currentPassion -= selectedSkill.manaCost;
+                    selectedSkill.Use(this, target);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"{selectedSkill.skillName} 스킬을 사용했습니다!");
+                }
+                else
+                {
+                    Console.WriteLine("마나가 부족합니다.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("열정이 부족합니다.");
+                }
+            }
+        }
+
+        //플레이어가 전투중에 스킬을 사용
+        public void PlayerTurn()
+        {
+
+        }
 
         // 상태 보기
         public void PlayerStats()
