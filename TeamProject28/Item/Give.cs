@@ -57,11 +57,25 @@ namespace TeamProject28.Item
 
             if(random.Next(0, 5) < temp % 5)
             {
-
+                for (int i = 0; i < ItemList.itemCount; i++)
+                {
+                    if (ItemList.items[i].price < (temp / 5) * 1000 && ItemList.items[i].type == ItemType.IQ)
+                    {
+                        ItemList.items[i].quantity++;
+                    }
+                    
+                }
             }
             if (random.Next(0, 5) < temp % 5)
             {
+                for (int i = 0; i < ItemList.itemCount; i++)
+                {
+                    if (ItemList.items[i].price < (temp / 5) * 1000 && ItemList.items[i].type == ItemType.focus)
+                    {
+                        ItemList.items[i].quantity++;
+                    }
 
+                }
             }
         }
     }
