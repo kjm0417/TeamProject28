@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TeamProject28.GameManager;
 
-namespace TeamProject28
+namespace TeamProject28.Quest_Folder
 {
-    internal class Quest
+    internal class QuestList
     {
         public bool is_Quest;//퀘스트 진행중인지
         public string name;//퀘스트 이름
@@ -22,7 +21,7 @@ namespace TeamProject28
         }
     }
 
-    internal class Quest1 : Quest
+    internal class Quest1 : QuestList
     {
         public override void Quest_Init()
         {
@@ -35,4 +34,18 @@ namespace TeamProject28
         }
     }
 
+    internal class Quest2 : QuestList
+    {
+        public override void Quest_Init()
+        {
+            is_Quest = false;
+            name = "아이템 장착하기";
+            inform = "장인은 도구탓을 하지 않지만 좋은 도구를 쓴다";
+            temp_Goals = 0;
+            goals = 5;
+            reward = "1000G";
+
+
+        }
+    }
 }
