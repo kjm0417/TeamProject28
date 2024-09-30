@@ -5,12 +5,14 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TeamProject28.GameManager;
+using TeamProject28.Item;
 
 namespace TeamProject28
 {
     internal class Battle
     {
         public Player player;
+        public Give give = new Give();
         public static int stage = 1;
         Random random = new Random();
 
@@ -319,6 +321,7 @@ namespace TeamProject28
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
+            Console.WriteLine("[캐릭터 정보]");
             Console.Write($"Lv.{beforeLevel} {player.name}");
             if ( player.level > beforeLevel )
             {
@@ -330,6 +333,13 @@ namespace TeamProject28
             }
             Console.WriteLine($"HP {player.maxTime} -> {player.currentTime}");
             Console.WriteLine($"exp {beforeExp} -> {player.exp}\n");
+
+            Console.WriteLine("[획득 아이템]");
+            give.GiveGold(monsters);
+            give.GiveItem();
+            give.GiveEquipment();
+            Console.WriteLine();
+
             Console.WriteLine("0. 다음\n");
 
             int input = GameStart.instance.Input();
