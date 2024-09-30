@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TeamProject28
 {
-    enum MonsterType { Easy, Normal, Hard, Boss}
-    internal class Monster
+    public enum MonsterType { Easy, Normal, Hard, Boss}
+    public class Monster
     {
         public int level;
         public string name;

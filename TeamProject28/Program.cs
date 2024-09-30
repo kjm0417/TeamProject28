@@ -4,7 +4,7 @@ using static TeamProject28.Player;
 
 namespace TeamProject28
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {

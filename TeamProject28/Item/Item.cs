@@ -39,5 +39,5 @@ namespace TeamProject28.Item
         }
     }
 
-    enum ItemType{ IQ, focus, time}
+    enum ItemType{ IQ, focus, time, passion}
 }
