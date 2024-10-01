@@ -100,8 +100,8 @@ namespace TeamProject28.GameManager
             }
             else
             {
-                player.name = Intro.CollectName();
                 player = new Player();
+                player.name = Intro.CollectName();
             }
 
             if(File.Exists("./itemData.json"))
@@ -124,10 +124,6 @@ namespace TeamProject28.GameManager
             {
                 quest.Quest_Init();
             }
-
-            //player = new Player();
-            //ItemList.Init();
-            //quest.Quest_Init();
         }
 
         public void Save()
