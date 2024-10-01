@@ -35,11 +35,15 @@ namespace TeamProject28.GameManager
 
         public void Start()
         {
-            Load();
+            //Load();
 
             if (instance == null)
             {
                 instance = this;
+
+                player = new Player();
+                ItemList.Init();
+                quest.Quest_Init();
             }       
 
             ActionSelect();
@@ -112,9 +116,9 @@ namespace TeamProject28.GameManager
             //    quest.Quest_Init();
             //}
 
-            player = new Player();
+            /*player = new Player();
             ItemList.Init();
-            quest.Quest_Init();
+            quest.Quest_Init();*/
         }
 
         public void Save()
