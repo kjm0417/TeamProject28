@@ -310,9 +310,9 @@ namespace TeamProject28
             }
 
             //선택한 몬스터 번호 받기
-            Monster selectMonster = monsters[target - 1];
+            Monster selectMonster = monsters[target - 1]; //target은 1부터 인데 배열은 0부터여서 
 
-            if (selectMonster.currentTime <= 0)
+            if (selectMonster.currentTime <= 0) //죽은 몬스터 선택했을 때 다시 입력
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다.");
