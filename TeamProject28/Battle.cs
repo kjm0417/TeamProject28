@@ -42,77 +42,181 @@ namespace TeamProject28
 
         public void UseSkillMenu()
         {
-            Console.WriteLine("\n사용할 스킬을 선택하세요:\n");
-
-            for (int i = 0; i < player.skills.Count; i++)
+            while (true)
             {
-                Console.WriteLine($"{i + 1}. {player.skills[i].skillName} (Cost: {player.skills[i].manaCost} 열정)");
-            }
-            Console.WriteLine("0. 취소");
+                Console.WriteLine("\n사용할 스킬을 선택하세요:\n");
 
-            int skillIndex = GameStart.instance.Input() - 1;
+                for (int i = 0; i < player.skills.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {player.skills[i].skillName} (Cost: {player.skills[i].manaCost} 열정)");
+                }
+                Console.WriteLine("0. 취소");
 
-            if (skillIndex == -1)
-            {
-                Start(); // 취소하면 다시 전투 시작 메뉴로 이동
+                int skillIndex = GameStart.instance.Input() - 1;
+
+                if (skillIndex == -1)
+                {
+                    PlayerTurn(); // 취소하면 PlayerTurn으로 돌아감
+                    break;
+                }
+                else if (skillIndex >= 0 && skillIndex < player.skills.Count)
+                {
+                    var skill = player.skills[skillIndex];
+
+                    if (skill.isSelfBuff)
+                    {
+                        // 자기 자신에게 버프 적용
+                        player.UseSkill(skillIndex, new List<Monster>());
+                        Console.WriteLine($"{player.name}에게 {skill.skillName}이(가) 적용되었습니다.");
+                    }
+                    else if (skill.numberPerson == 1)
+                    {
+                        // 단일 대상 스킬
+                        SelectSingleTarget(skillIndex);
+                    }
+                    else if (skill.numberPerson == 2)
+                    {
+                        // 다수 대상 스킬
+                        SelectMultipleTargets(skillIndex, skill.numberPerson);
+                    }
+
+                    // 스킬 사용 후 상태창 출력
+                    Console.Clear();
+                    ShowBattleStatus();
+                    WaitForNextStep();
+
+                    // 적이 죽었는지 확인
+                    if (monsters.All(monster => monster.currentTime <= 0))
+                    {
+                        EndBattle(victory: true);
+                        break;
+                    }
+
+                    // 스킬 사용 후 적의 공격
+                    MonsterAttack();
+
+                    break; // 적 공격 후 턴 종료
+                }
+
+                Console.WriteLine("잘못된 선택입니다. 다시 시도해주세요.");
             }
-            else if (skillIndex >= 0 && skillIndex < player.skills.Count)
+        }
+
+        public void SelectSingleTarget(int skillIndex)
+        {
+            while (true)
             {
                 Console.WriteLine("\n공격할 대상을 선택하세요:\n");
+
                 for (int i = 0; i < monsters.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. Lv. {monsters[i].level} {monsters[i].name} (HP: {monsters[i].currentTime})");
+                    if (monsters[i].currentTime > 0)
+                    {
+                        Console.WriteLine($"{i + 1}. Lv. {monsters[i].level} {monsters[i].name} (HP: {monsters[i].currentTime})");
+                    }
                 }
+
                 int targetIndex = GameStart.instance.Input() - 1;
 
-                if (targetIndex >= 0 && targetIndex < monsters.Count)
+                if (targetIndex >= 0 && targetIndex < monsters.Count && monsters[targetIndex].currentTime > 0)
                 {
-                    player.UseSkill(skillIndex, new List<Monster> { monsters[targetIndex] });
-                    BattleLoop(); // 전투 루프로 다시 돌아감
+                    var targetMonster = monsters[targetIndex];
+                    player.UseSkill(skillIndex, new List<Monster> { targetMonster });
+
+                    if (targetMonster.currentTime <= 0)
+                    {
+                        Console.WriteLine($"Lv. {targetMonster.level} {targetMonster.name}은(는) 죽었습니다.");
+                        targetMonster.currentTime = 0;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Hp. {targetMonster.currentTime}/{targetMonster.maxTime}");
+                    }
+
+                    break; // 타겟 선택이 완료되면 루프를 종료
+                }
+                else
+                {
+                    Console.WriteLine("잘못된 선택이거나 이미 죽은 적입니다. 다시 선택하세요.");
+                }
+            }
+        }
+
+        public void SelectMultipleTargets(int skillIndex, int targetCount)
+        {
+            List<Monster> selectedMonsters = new List<Monster>();
+
+            for (int t = 0; t < targetCount; t++)
+            {
+                while (true)
+                {
+                    Console.WriteLine("\n공격할 대상을 선택하세요:\n");
+                    for (int i = 0; i < monsters.Count; i++)
+                    {
+                        if (!selectedMonsters.Contains(monsters[i]) && monsters[i].currentTime > 0)
+                        {
+                            Console.WriteLine($"{i + 1}. Lv. {monsters[i].level} {monsters[i].name} (HP: {monsters[i].currentTime})");
+                        }
+                    }
+
+                    int targetIndex = GameStart.instance.Input() - 1;
+
+                    if (targetIndex >= 0 && targetIndex < monsters.Count && monsters[targetIndex].currentTime > 0 && !selectedMonsters.Contains(monsters[targetIndex]))
+                    {
+                        selectedMonsters.Add(monsters[targetIndex]);
+                        break; // 유효한 선택일 경우 루프 종료
+                    }
+                    else
+                    {
+                        Console.WriteLine("잘못된 선택이거나 이미 선택된 적입니다. 다시 선택하세요.");
+                    }
                 }
             }
 
-            // 다음 턴으로 이동
-            WaitForNextStep();
+            player.UseSkill(skillIndex, selectedMonsters);
+
+            foreach (var targetMonster in selectedMonsters)
+            {
+                if (targetMonster.currentTime <= 0)
+                {
+                    Console.WriteLine($"Lv. {targetMonster.level} {targetMonster.name}은(는) 죽었습니다.");
+                    targetMonster.currentTime = 0;
+                }
+                else
+                {
+                    Console.WriteLine($"Hp. {targetMonster.currentTime}/{targetMonster.maxTime}");
+                }
+            }
         }
 
 
         //battle 관련 토글
         public void BattleLoop()
         {
-            // 전투가 끝날 때까지 계속 반복
             while (true)
             {
                 Console.Clear();
                 // 플레이어 턴
-                Console.WriteLine("플레이어 턴");
-                PlayerAttack(); // 플레이어가 적을 공격
-                //Thread.Sleep(3000);
-
+                PlayerTurn();
 
                 // 적이 모두 죽었는지 확인
-                bool allMonstersDead = monsters.All(monster => monster.currentTime <= 0);
-                if (allMonstersDead)
+                if (monsters.All(monster => monster.currentTime <= 0))
                 {
-                    Console.Clear();
                     EndBattle(victory: true); // 승리
                     break;
                 }
 
-                // 적의 턴
-                Console.WriteLine("적의 턴");
-                MonsterAttack(); // 적이 플레이어를 공격
+                //// 적의 턴
+                //MonsterAttack();
 
-                //Thread.Sleep(3000);
                 // 플레이어가 죽었는지 확인
                 if (player.currentTime <= 0)
                 {
-                    Console.Clear();
                     EndBattle(victory: false); // 패배
                     break;
                 }
 
-                ShowBattleStatus(); // 현재 상태 출력
+                ShowBattleStatus(); // 전투 상태 출력
             }
         }
 
@@ -126,7 +230,7 @@ namespace TeamProject28
             foreach (Monster monster in monsters)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"Lv.{monster.level} {monster.name} HP {monster.maxTime}");
+                Console.WriteLine($"Lv.{monster.level} {monster.name} TIme {(monster.currentTime<=0?"Dead": monster.currentTime)}");
             }
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -151,13 +255,26 @@ namespace TeamProject28
             switch (action)
             {
                 case 1:
-                    BattleLoop();
+                    PlayerAttack();
                     break;
                 case 2:
                     UseSkillMenu();
                     break;
             }
+
+            // 적이 모두 죽었는지 확인
+            if (monsters.All(monster => monster.currentTime <= 0))
+            {
+                EndBattle(victory: true);
+            }
+
+            // 플레이어가 죽었는지 확인
+            if (player.currentTime <= 0)
+            {
+                EndBattle(victory: false);
+            }
         }
+        
 
         public void PlayerAttack()
         {
@@ -360,7 +477,7 @@ namespace TeamProject28
 
         public void ShowBattleStatus()
         {
-            Console.WriteLine("현재 전투 상황:\n");
+            Console.WriteLine("\n현재 전투 상황\n");
 
             foreach (Monster monster in monsters)
             {
@@ -389,6 +506,8 @@ namespace TeamProject28
                 Console.ForegroundColor = ConsoleColor.White;
                 input = GameStart.instance.Input();
             }
+
+            
 
         }
 

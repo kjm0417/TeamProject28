@@ -60,9 +60,10 @@ namespace TeamProject28
                 if (currentPassion >= selectedSkill.manaCost)
                 {
                     currentPassion -= selectedSkill.manaCost;
-                    selectedSkill.Use(this, target);
+                   
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"{selectedSkill.skillName} 스킬을 사용했습니다!");
+                    selectedSkill.Use(this, target);
                 }
                 else
                 {

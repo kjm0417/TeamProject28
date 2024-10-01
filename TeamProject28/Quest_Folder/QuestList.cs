@@ -67,4 +67,24 @@ namespace TeamProject28.Quest_Folder
             goals_inform = "스테이지 3회 클리어" + " (" + tmp_goal + " / " + goal + ")";
         }
     }
+
+    public class Quest3 : QuestList
+    {
+        public override void Quest_Init()
+        {
+            goal = 3;
+            tmp_goal = 0;
+            is_Clear = false;
+            is_Quest = false;
+            name = "카페인 섭취하기.";
+            inform = "개발자는 혈소판 대신 카페인이 돌아다는다는 소문이 있다..";
+            goals_inform = "회복 아이템 3회 사용하기" + " (" + tmp_goal + " / " + goal + ")";
+            reward = 1000;
+        }
+
+        public override void Quest_Tmp()
+        {
+            goals_inform = "회복 아이템 3회 사용하기" + " (" + tmp_goal + " / " + goal + ")";
+        }
+    }
 }

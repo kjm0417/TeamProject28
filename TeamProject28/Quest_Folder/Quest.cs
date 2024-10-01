@@ -16,15 +16,18 @@ namespace TeamProject28.Quest_Folder
             questList = new List<QuestList>();
             questList.Add(new Quest1());
             questList.Add(new Quest2());
+            questList.Add(new Quest3());
 
             questList[0].Quest_Init();
             questList[1].Quest_Init();
+            questList[2].Quest_Init();
         }
 
         public void OpenQuest()
         {
             questList[0].Quest_Tmp();
             questList[1].Quest_Tmp();
+            questList[2].Quest_Tmp();
 
             // 이전 창 지우기
             Console.Clear();
@@ -58,7 +61,7 @@ namespace TeamProject28.Quest_Folder
             Console.WriteLine("원하시는 퀘스트를 선택해주세요.");
 
             int input = GameStart.instance.Input();
-            while (input < 0 || input > 2)
+            while (input < 0 || input > 3)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다");
@@ -87,6 +90,9 @@ namespace TeamProject28.Quest_Folder
                     Quest_Open(input - 1);
                     break;
                 case 2:
+                    Quest_Open(input - 1);
+                    break;
+                case 3:
                     Quest_Open(input - 1);
                     break;
                 case 0:
