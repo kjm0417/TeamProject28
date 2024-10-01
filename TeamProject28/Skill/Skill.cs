@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamProject28
 {
-     public abstract class Skill
+     public class Skill
     {
         public string skillName { get; set; }
         public int numberPerson { get; set; }
@@ -23,13 +23,16 @@ namespace TeamProject28
         }
 
         // 스킬 사용 시 추상 메서드
-        public abstract void Use(Player player, List<Monster> targets);
+        public virtual void Use(Player player, List<Monster> targets)
+        {
+
+        }
     }
 
     //한명 적을 2배 피해 주는 기술
     public class SuperPower : Skill
     {
-        public SuperPower() : base("해설 문제 보기", 1,15, false)
+        public SuperPower() : base("해설 문제 보기", 1, 15, false)
         {
 
         }
@@ -48,9 +51,6 @@ namespace TeamProject28
                 Console.WriteLine("잘못된 대상 수입니다.");
             }
         }
-
-       
-
     }
 
     public class DoubleAttack : Skill
@@ -75,12 +75,13 @@ namespace TeamProject28
         }
     }
 
+
     // 공격력 버프 스킬
     public class AttackBuff : Skill
     {
         public int BuffAmount { get; set; }
 
-        public AttackBuff() : base("Attack Buff", 0, 13, true) // 0은 적을 공격하지 않음
+        public AttackBuff() : base("Attack Buff", 0, 13,true) // 0은 적을 공격하지 않음
         {
             BuffAmount = 5;
         }
@@ -108,6 +109,4 @@ namespace TeamProject28
             Console.WriteLine($"{player.name}가 {HealAmount}만큼 체력을 회복했습니다. 현재 체력: {player.currentTime}/{player.maxTime}");
         }
     }
-
-
 }

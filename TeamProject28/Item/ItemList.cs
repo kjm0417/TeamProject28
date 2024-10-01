@@ -6,15 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace TeamProject28.Item
+namespace TeamProject28
 {
     internal class ItemList
     {
-        public static int itemCount = 8;
-        public static Item[] items = new Item[itemCount];
+        public int itemCount = 8;
+        public Item[] items { get; set; }
 
-        public static void Init()
+        public void Init()
         {
+            items = new Item[itemCount];
             items[0] = new Item("스파르타 : 기초편", ItemType.IQ, 2, "기초부터 차근차근 알려주는 스파르타 강의입니다.", 600, 1, false);
             items[1] = new Item("스파르타 : 심화편", ItemType.IQ, 4, "기본기를 다진 분들을 위한 심화편 스파르타 강의입니다.", 1500, 1, false);
             items[2] = new Item("스파르타 : 기출문제집", ItemType.IQ, 7, "강의를 마스터하신 분들에게 어울리는 기출문제집입니다.", 2400, 0, false);

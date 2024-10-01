@@ -9,10 +9,11 @@ namespace TeamProject28.Quest_Folder
 {
     public class Quest
     {
-        public List<QuestList> questList = new List<QuestList>();
+        public List<QuestList> questList { get; set; }
 
         public void Quest_Init()
         {
+            questList = new List<QuestList>();
             questList.Add(new Quest1());
             questList.Add(new Quest2());
             questList.Add(new Quest3());
