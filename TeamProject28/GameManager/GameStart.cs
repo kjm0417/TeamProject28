@@ -18,7 +18,6 @@ namespace TeamProject28.GameManager
         public Quest quest = new Quest(); //퀘스트 가져오기
         public static GameStart instance;
         public ItemList itemList = new ItemList();
-        string path = "C:\\Test";
 
         public int Input() //선택 입력 기능
         {
@@ -104,9 +103,9 @@ namespace TeamProject28.GameManager
                 player = new Player();
             }
 
-            if(File.Exists($"{path}\\itemData.json"))
+            if(File.Exists("./itemData.json"))
             {
-                string json = File.ReadAllText($"{path}\\itemData.json");
+                string json = File.ReadAllText("./itemData.json");
                 var datas = JsonSerializer.Deserialize<ItemList>(json);
                 itemList.items = datas.items;
             }
@@ -115,9 +114,9 @@ namespace TeamProject28.GameManager
                 itemList.Init();
             }
 
-            if (File.Exists($"{path}\\questData.json"))
+            if (File.Exists("./questData.json"))
             {
-                string json = File.ReadAllText($"{path}\\questData.json");
+                string json = File.ReadAllText("./questData.json");
                 quest = JsonSerializer.Deserialize<Quest>(json);
             }
             else
@@ -132,9 +131,9 @@ namespace TeamProject28.GameManager
 
         public void Save()
         {
-            string playerFileName = $"{path}\\playerData.json";
-            string itemFileName = $"{path}\\itemData.json";
-            string questFileName = $"{path}\\questData.json";
+            string playerFileName = "./playerData.json";
+            string itemFileName = "./itemData.json";
+            string questFileName = "./questData.json";
             string jsonPlayer = JsonSerializer.Serialize<Player>(player);
             string jsonItem = JsonSerializer.Serialize<ItemList>(itemList);
             string jsonQuest = JsonSerializer.Serialize<Quest>(quest);
