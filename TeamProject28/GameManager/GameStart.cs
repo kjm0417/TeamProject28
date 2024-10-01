@@ -12,6 +12,7 @@ namespace TeamProject28.GameManager
 {
     internal class GameStart
     {
+        public List<Skill> skills = new List<Skill> { new SuperPower(), new DoubleAttack(), new AttackBuff(), new Heal() };
         public Player player = new Player();//player 정보 가져오기
         public Battle battle = new Battle();//전투 정보 가져오기
         public Inventory inventory = new Inventory(); //인벤토리 가져오기
