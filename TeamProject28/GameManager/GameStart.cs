@@ -35,8 +35,6 @@ namespace TeamProject28.GameManager
 
         public void Start()
         {
-            Load();
-
             if (instance == null)
             {
                 instance = this;
