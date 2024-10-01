@@ -109,4 +109,10 @@ namespace TeamProject28
             Console.WriteLine($"{player.name}가 {HealAmount}만큼 체력을 회복했습니다. 현재 체력: {player.currentTime}/{player.maxTime}");
         }
     }
+
+    
+
+
+
+
 }

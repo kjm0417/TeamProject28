@@ -47,9 +47,9 @@ namespace TeamProject28
             {
                 Console.WriteLine("\n사용할 스킬을 선택하세요:\n");
 
-                for (int i = 0; i < GameStart.instance.skills.Count; i++)
+                for (int i = 0; i < player.skills.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {GameStart.instance.skills[i].skillName} (Cost: {GameStart.instance.skills[i].manaCost} 열정)");
+                    Console.WriteLine($"{i + 1}. {player.skills[i].skillName} (Cost: {player.skills[i].manaCost} 열정)");
                 }
                 Console.WriteLine("0. 취소");
 
@@ -60,9 +60,9 @@ namespace TeamProject28
                     PlayerTurn(); // 취소하면 PlayerTurn으로 돌아감
                     break;
                 }
-                else if (skillIndex >= 0 && skillIndex < GameStart.instance.skills.Count)
+                else if (skillIndex >= 0 && skillIndex < player.skills.Count)
                 {
-                    var skill = GameStart.instance.skills[skillIndex];
+                    var skill = player.skills[skillIndex];
 
                     if (skill.isSelfBuff)
                     {
