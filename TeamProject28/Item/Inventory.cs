@@ -52,10 +52,7 @@ namespace TeamProject28
                             break;
                     }
                     Console.Write($" + {item.status}\t| {item.description}");
-                    if (item.type == ItemType.time || item.type == ItemType.passion)
-                    {
-                        Console.Write($" \t| 보유중 : {item.quantity}개");
-                    }
+                    Console.Write($" \t| 보유중 : {item.quantity}개");
                     Console.WriteLine();
                 }
             }
