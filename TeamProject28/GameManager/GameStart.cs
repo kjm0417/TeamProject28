@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TeamProject28.Item;
 using TeamProject28.Quest_Folder;
 using static TeamProject28.Player;
 
@@ -18,7 +17,8 @@ namespace TeamProject28.GameManager
         public Inventory inventory = new Inventory(); //인벤토리 가져오기
         public Quest quest = new Quest(); //퀘스트 가져오기
         public static GameStart instance;
-        public static ItemList itemList = new ItemList();
+        public ItemList itemList = new ItemList();
+        string path = "C:\\Test";
 
         public int Input() //선택 입력 기능
         {
@@ -96,38 +96,53 @@ namespace TeamProject28.GameManager
 
         public void Load()
         {
-            //if (File.Exists("./playerData.json"))
-            //{
-            //    //string json = File.ReadAllText("./playerData.json");
-            //    ////player = JsonConvert.DeserializeObject<Player>(json);
-            //    //json = File.ReadAllText("./itemData.json");
-            //    //items = JsonConvert.DeserializeObject<ItemList>(json);
-            //    //json = File.ReadAllText("./questData.json");
-            //    //quest = JsonConvert.DeserializeObject<Quest>(json);
-            //}
-            //else
-            //{
-            //    player = new Player();
-            //    ItemList.Init();
-            //    quest.Quest_Init();
-            //}
+            if (File.Exists($"{path}\\playerData.json"))
+            {
+                string json = File.ReadAllText($"{path}\\playerData.json");
+                player = JsonSerializer.Deserialize<Player>(json);
+            }
+            else
+            {
+                player = new Player();
+            }
 
-            player = new Player();
-            ItemList.Init();
-            quest.Quest_Init();
+            if(File.Exists($"{path}\\itemData.json"))
+            {
+                string json = File.ReadAllText($"{path}\\itemData.json");
+                var datas = JsonSerializer.Deserialize<ItemList>(json);
+                itemList.items = datas.items;
+            }
+            else
+            {
+                itemList.Init();
+            }
+
+            if (File.Exists($"{path}\\questData.json"))
+            {
+                string json = File.ReadAllText($"{path}\\questData.json");
+                quest = JsonSerializer.Deserialize<Quest>(json);
+            }
+            else
+            {
+                quest.Quest_Init();
+            }
+
+            //player = new Player();
+            //ItemList.Init();
+            //quest.Quest_Init();
         }
 
         public void Save()
         {
-            //string playerFileName = "playerData.json";
-            //string itemFileName = "itemData.json";
-            //string questFileName = "questData.json";
-            //string jsonPlayer = JsonConvert.SerializeObject(player);
-            //string jsonItem = JsonConvert.SerializeObject(items);
-            //string jsonQuest = JsonConvert.SerializeObject(quest);
-            //File.WriteAllText(playerFileName, jsonPlayer);
-            //File.WriteAllText(itemFileName, jsonItem);
-            //File.WriteAllText(questFileName, jsonQuest);
+            string playerFileName = $"{path}\\playerData.json";
+            string itemFileName = $"{path}\\itemData.json";
+            string questFileName = $"{path}\\questData.json";
+            string jsonPlayer = JsonSerializer.Serialize<Player>(player);
+            string jsonItem = JsonSerializer.Serialize<ItemList>(itemList);
+            string jsonQuest = JsonSerializer.Serialize<Quest>(quest);
+            File.WriteAllText(playerFileName, jsonPlayer);
+            File.WriteAllText(itemFileName, jsonItem);
+            File.WriteAllText(questFileName, jsonQuest);
         }
     }
 }

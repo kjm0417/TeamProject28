@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamProject28
 {
-     public abstract class Skill
+     public class Skill
     {
         public string skillName { get; set; }
         public int numberPerson { get; set; }
@@ -20,7 +20,10 @@ namespace TeamProject28
         }
 
         // 스킬 사용 시 추상 메서드
-        public abstract void Use(Player player, List<Monster> targets);
+        public virtual void Use(Player player, List<Monster> targets)
+        {
+
+        }
     }
 
     //한명 적을 2배 피해 주는 기술

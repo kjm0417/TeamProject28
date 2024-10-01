@@ -6,16 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using TeamProject28.GameManager;
 
-namespace TeamProject28.Item
+namespace TeamProject28
 {
     internal class Inventory
     {
         Player player;
-        public Item[] itemList = ItemList.items;
+        public ItemList itemList;
+
 
         public void OpenInventory()
         {
             player = GameStart.instance.player;
+            itemList = GameStart.instance.itemList;
             // 이전 창 지우기
             Console.Clear();
             //상태창 띄우기
@@ -24,8 +26,8 @@ namespace TeamProject28.Item
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("보유중인 아이템이 표시됩니다. (장착중일 경우 [E])");
             Console.WriteLine();
-
-            foreach (Item item in itemList)
+            ;
+            foreach (Item item in itemList.items)
             {
                 if (item.quantity > 0)
                 {
@@ -85,7 +87,7 @@ namespace TeamProject28.Item
                     DrinkPotion();
                     break;
                 case 0:
-                    ItemList.items = itemList;
+                    //itemList.items = itemList.items;
                     GameStart.instance.Start();
                     return;
             }
@@ -105,7 +107,7 @@ namespace TeamProject28.Item
             Console.WriteLine("아이템 장착을 관리할 수 있습니다. (장착중일 경우 [E])");
             Console.WriteLine();
 
-            foreach (Item item in itemList)
+            foreach (Item item in itemList.items)
             {
                 if (item.quantity > 0 && item.type != ItemType.time && item.type != ItemType.passion)
                 {
@@ -152,7 +154,7 @@ namespace TeamProject28.Item
                     OpenInventory();
                     return;
                 default:
-                    foreach(Item item in itemList)
+                    foreach(Item item in itemList.items)
                     {
                         if(item.type == items[input - 1].type && item != items[input - 1])
                         {
@@ -164,7 +166,7 @@ namespace TeamProject28.Item
                     player.IQ = player.baseIQ;
                     player.focus = player.baseFocus;
 
-                    foreach(Item item in itemList)
+                    foreach(Item item in itemList.items)
                     {
                         if (item.isEquipped)
                         {
@@ -197,7 +199,7 @@ namespace TeamProject28.Item
             Console.WriteLine("포션을 통해 시간과 열정을 회복할 수 있습니다.");
             Console.WriteLine();
 
-            foreach (Item item in itemList)
+            foreach (Item item in itemList.items)
             {
                 if (item.type == ItemType.time || item.type == ItemType.passion)
                 {
@@ -241,14 +243,14 @@ namespace TeamProject28.Item
                     OpenInventory();
                     return;
                 case 1:
-                    if (ItemList.items[6].quantity <= 0)
+                    if (itemList.items[6].quantity <= 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("포션이 부족합니다.");
                     }
                     else
                     {
-                        ItemList.items[6].quantity -= 1;
+                        itemList.items[6].quantity -= 1;
                         player.currentTime += 30;
                         if (player.currentTime > player.maxTime)
                         {
@@ -263,14 +265,14 @@ namespace TeamProject28.Item
                     DrinkPotion();
                     break;
                 case 2:
-                    if (ItemList.items[7].quantity <= 0)
+                    if (itemList.items[7].quantity <= 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("포션이 부족합니다.");
                     }
                     else
                     {
-                        ItemList.items[7].quantity -= 1;
+                        itemList.items[7].quantity -= 1;
                         player.currentPassion += 30;
                         if (player.currentPassion > player.maxPassion)
                         {

@@ -9,23 +9,24 @@ using static TeamProject28.SuperPower;
 
 namespace TeamProject28
 {
+    [Serializable]
     public class Player 
     {
        
-        public int level;
-        public string name;
-        public Job job;
-        public double baseIQ;
-        public double IQ;
-        public int baseFocus;
-        public int focus;
-        public int maxTime;
-        public int currentTime;
-        public int maxPassion;
-        public int currentPassion;
-        public int gold;
-        public int exp;
-        public List<Skill> skills;
+        public int level { get; set; }
+        public string name { get; set; }
+        public Job job { get; set; }
+        public double baseIQ { get; set; }
+        public double IQ { get; set; }
+        public int baseFocus { get; set; }
+        public int focus { get; set; }
+        public int maxTime { get; set; }
+        public int currentTime { get; set; }
+        public int maxPassion { get; set; }
+        public int currentPassion { get; set; }
+        public int gold { get; set; }
+        public int exp { get; set; }
+        public List<Skill> skills { get; set; }
 
 
         public Player()

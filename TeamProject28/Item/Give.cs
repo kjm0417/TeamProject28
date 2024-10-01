@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TeamProject28.GameManager;
 
-namespace TeamProject28.Item
+namespace TeamProject28
 {
     internal class Give
     {
-        public Give() { }
+        public ItemList itemList;
+        public Give()
+        {
+            if (itemList == null)
+            {
+                itemList = GameStart.instance.itemList;
+            }
+        }
 
         public void GiveGold(List<Monster> monsters)
         {
@@ -47,8 +55,8 @@ namespace TeamProject28.Item
                 passionPotion++;
             }
 
-            ItemList.items[6].quantity += timePotion;
-            ItemList.items[7].quantity += passionPotion;
+            itemList.items[6].quantity += timePotion;
+            itemList.items[7].quantity += passionPotion;
 
             Console.WriteLine("에너지드링크 - {0}", timePotion);
             Console.WriteLine("열정드링크 - {0}", passionPotion);
@@ -62,28 +70,28 @@ namespace TeamProject28.Item
             // IQ 템 획득 확률
             if(random.Next(0, 5) < temp % 5)
             {
-                for (int i = 1; i <= ItemList.itemCount; i++)
+                for (int i = 1; i <= itemList.itemCount; i++)
                 {
-                    int j = ItemList.itemCount - i;
-                    if (ItemList.items[j].price < (temp / 5) * 1000 && ItemList.items[j].type == ItemType.IQ)
+                    int j = itemList.itemCount - i;
+                    if (itemList.items[j].price < (temp / 5) * 1000 && itemList.items[j].type == ItemType.IQ)
                     {
-                        ItemList.items[j].quantity++;
-                        Console.WriteLine($"{ ItemList.items[j].name } - 1");
+                        itemList.items[j].quantity++;
+                        Console.WriteLine($"{ itemList.items[j].name } - 1");
                         break;
-                    }                    
+                    }
                 }
             }
 
             // 집중력 템 획득 확률
             if (random.Next(0, 5) < temp % 5)
             {
-                for (int i = 1; i <= ItemList.itemCount; i++)
+                for (int i = 1; i <= itemList.itemCount; i++)
                 {
-                    int j = ItemList.itemCount - i;
-                    if (ItemList.items[j].price < (temp / 5) * 1000 && ItemList.items[j].type == ItemType.focus)
+                    int j = itemList.itemCount - i;
+                    if (itemList.items[j].price < (temp / 5) * 1000 && itemList.items[j].type == ItemType.focus)
                     {
-                        ItemList.items[j].quantity++;
-                        Console.WriteLine($"{ItemList.items[j].name} - 1");
+                        itemList.items[j].quantity++;
+                        Console.WriteLine($"{itemList.items[j].name} - 1");
                         break;
                     }
                 }

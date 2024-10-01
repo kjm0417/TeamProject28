@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TeamProject28.Item
+namespace TeamProject28
 {
     internal class Item
     {
-        public string name;
-        public ItemType type;
-        public int status;
-        public string description;
-        public int price;
-        public int quantity;
-        public bool isEquipped;
+        public string name { get; set; }
+        public ItemType type { get; set; }
+        public int status { get; set; }
+        public string description { get; set; }
+        public int price { get; set; }
+        public int quantity { get; set; }
+        public bool isEquipped { get; set; }
 
         public Item()
         {

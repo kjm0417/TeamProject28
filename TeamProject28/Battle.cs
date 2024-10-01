@@ -5,14 +5,13 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TeamProject28.GameManager;
-using TeamProject28.Item;
 
 namespace TeamProject28
 {
     internal class Battle
     {
         public Player player;
-        public Give give = new Give();
+        public Give give;
         public static int stage = 1;
         Random random = new Random();
 
