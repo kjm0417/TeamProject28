@@ -73,7 +73,7 @@ namespace TeamProject28.Quest_Folder
 
             if(input != 0)
             {
-                while (questList[input - 1].is_Clear == true || input != 0)
+                while (questList[input - 1].is_Clear == true && input != 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("이미 클리어하였습니다.");
