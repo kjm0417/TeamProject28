@@ -93,9 +93,9 @@ namespace TeamProject28.GameManager
 
         public void Load()
         {
-            if (File.Exists($"{path}\\playerData.json"))
+            if (File.Exists("./playerData.json"))
             {
-                string json = File.ReadAllText($"{path}\\playerData.json");
+                string json = File.ReadAllText("./playerData.json");
                 player = JsonSerializer.Deserialize<Player>(json);
             }
             else

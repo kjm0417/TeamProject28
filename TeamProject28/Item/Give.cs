@@ -30,6 +30,7 @@ namespace TeamProject28
                 }
             }
 
+            GameStart.instance.player.gold += sum;
             Console.WriteLine(sum + " Gold");
         }
 

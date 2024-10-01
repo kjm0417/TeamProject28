@@ -26,7 +26,7 @@ namespace TeamProject28
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("보유중인 아이템이 표시됩니다. (장착중일 경우 [E])");
             Console.WriteLine();
-            ;
+            
             foreach (Item item in itemList.items)
             {
                 if (item.quantity > 0)
