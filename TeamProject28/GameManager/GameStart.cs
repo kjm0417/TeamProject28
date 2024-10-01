@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,13 +35,16 @@ namespace TeamProject28.GameManager
 
         public void Start()
         {
+            Load();
+
             if (instance == null)
             {
                 instance = this;
-                ItemList.Init();
-                quest.Quest_Init();
-            }
+            }       
+
             ActionSelect();
+
+            Save();
         }
 
 
@@ -88,6 +92,42 @@ namespace TeamProject28.GameManager
                 case 0:
                     return;
             }
+        }
+
+        public void Load()
+        {
+            //if (File.Exists("./playerData.json"))
+            //{
+            //    //string json = File.ReadAllText("./playerData.json");
+            //    ////player = JsonConvert.DeserializeObject<Player>(json);
+            //    //json = File.ReadAllText("./itemData.json");
+            //    //items = JsonConvert.DeserializeObject<ItemList>(json);
+            //    //json = File.ReadAllText("./questData.json");
+            //    //quest = JsonConvert.DeserializeObject<Quest>(json);
+            //}
+            //else
+            //{
+            //    player = new Player();
+            //    ItemList.Init();
+            //    quest.Quest_Init();
+            //}
+
+            player = new Player();
+            ItemList.Init();
+            quest.Quest_Init();
+        }
+
+        public void Save()
+        {
+            //string playerFileName = "playerData.json";
+            //string itemFileName = "itemData.json";
+            //string questFileName = "questData.json";
+            //string jsonPlayer = JsonConvert.SerializeObject(player);
+            //string jsonItem = JsonConvert.SerializeObject(items);
+            //string jsonQuest = JsonConvert.SerializeObject(quest);
+            //File.WriteAllText(playerFileName, jsonPlayer);
+            //File.WriteAllText(itemFileName, jsonItem);
+            //File.WriteAllText(questFileName, jsonQuest);
         }
     }
 }
