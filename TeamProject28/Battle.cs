@@ -20,6 +20,7 @@ namespace TeamProject28
         public void Start()
         {
             player = GameStart.instance.player;
+            give = new Give();
             monsters.Clear();
             if (stage % 5 == 0)
             {
