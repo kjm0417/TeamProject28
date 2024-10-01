@@ -25,7 +25,6 @@ namespace TeamProject28
         public int currentPassion;
         public int gold;
         public int exp;
-        public List<Skill> skills;
 
 
         public Player()
@@ -43,7 +42,6 @@ namespace TeamProject28
             this.currentPassion = maxPassion;
             this.gold = 1500;
             this.exp = 0;
-            skills = new List<Skill> {new SuperPower(), new DoubleAttack(), new AttackBuff(), new Heal()};
         }
 
         public enum Job { 수강생, 튜터, 담임매니저 }
@@ -53,9 +51,9 @@ namespace TeamProject28
         //스킬에 대한 배열 가져오기 skill가져와서 사용해야한다, 스킬 코르기 위한 int
         public void UseSkill(int skillindex, List<Monster> target) 
         {
-            if (skillindex >= 0 && skillindex < skills.Count)
+            if (skillindex >= 0 && skillindex < GameStart.instance.skills.Count)
             {
-                Skill selectedSkill = skills[skillindex];
+                Skill selectedSkill = GameStart.instance.skills[skillindex];
                 if (currentPassion >= selectedSkill.manaCost)
                 {
                     currentPassion -= selectedSkill.manaCost;
