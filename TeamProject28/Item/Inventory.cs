@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TeamProject28.GameManager;
+using TeamProject28.Quest_Folder;
 
 namespace TeamProject28
 {
@@ -247,7 +248,10 @@ namespace TeamProject28
                     }
                     else
                     {
-                        itemList.items[6].quantity -= 1;
+                        if (GameStart.instance.quest.questList[2].is_Quest == true)
+                            GameStart.instance.quest.questList[2].tmp_goal += 1;
+
+                        ItemList.items[6].quantity -= 1;
                         player.currentTime += 30;
                         if (player.currentTime > player.maxTime)
                         {
