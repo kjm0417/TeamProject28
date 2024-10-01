@@ -9,8 +9,8 @@ namespace TeamProject28
         static void Main(string[] args)
         {
             GameStart gameStart = new GameStart();
+            Intro.IntroScene();
             gameStart.Load();
-            gameStart.player.name = Intro.IntroScene();
             gameStart.Start();
         }
     }

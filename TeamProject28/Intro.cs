@@ -9,7 +9,7 @@ namespace TeamProject28
 {
     public class Intro
     {
-        public static string IntroScene()
+        public static void IntroScene()
         {
             string text = "Loading...";
             int windowWidth = Console.WindowWidth;
@@ -47,8 +47,12 @@ namespace TeamProject28
             Console.WriteLine("\n" + new string(' ', 20 / 2 - 8) + "Press To any key\n\n");
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             Console.Clear();
+            
+            return;
+        }
 
-
+        public static string CollectName()
+        {
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
             Console.Write("원하시는 이름을 설정해주세요.\n>> ");
             string name = Console.ReadLine();
@@ -58,6 +62,7 @@ namespace TeamProject28
                 name = Console.ReadLine();
             }
             Console.Clear();
+
             return name;
         }
     }

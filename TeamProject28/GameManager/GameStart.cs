@@ -100,6 +100,7 @@ namespace TeamProject28.GameManager
             }
             else
             {
+                player.name = Intro.CollectName();
                 player = new Player();
             }
 
