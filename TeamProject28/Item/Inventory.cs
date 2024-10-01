@@ -12,6 +12,7 @@ namespace TeamProject28.Item
     {
         Player player;
         public Item[] itemList = ItemList.items;
+
         public void OpenInventory()
         {
             player = GameStart.instance.player;
