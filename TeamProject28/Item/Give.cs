@@ -38,7 +38,7 @@ namespace TeamProject28
         {
             // 포션 획득 확률
             Random random = new Random();
-            int temp = Battle.stage;
+            int temp = GameStart.instance.player.stage_Tmp;
             int timePotion = 0;
             int passionPotion = 0;
             while (temp > 5)
@@ -66,7 +66,7 @@ namespace TeamProject28
         public void GiveEquipment()
         {
             Random random = new Random();
-            int temp = Battle.stage + 5;
+            int temp = GameStart.instance.player.stage_Tmp + 5;
 
             // IQ 템 획득 확률
             if(random.Next(0, 5) < temp % 5)
