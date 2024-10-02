@@ -134,7 +134,7 @@ namespace TeamProject28
 
             int input = GameStart.instance.Input();
 
-            while (input < 0 || input >= itemList.items.Length)
+            while (input < 0 || input > itemList.items.Length)
             {
                 Console.WriteLine("잘못된 입력입니다.");
                 input = GameStart.instance.Input();
@@ -229,7 +229,7 @@ namespace TeamProject28
 
             int input = GameStart.instance.Input();
 
-            while (input < 0 || input >= itemList.items.Length)
+            while (input < 0 || input > itemList.items.Length)
             {
                 Console.WriteLine("잘못된 입력입니다.");
                 input = GameStart.instance.Input();
