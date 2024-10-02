@@ -13,6 +13,7 @@ namespace TeamProject28
     {
         Player player;
         public ItemList itemList;
+        public Shop shop = new Shop(); //상점 가져오기
 
 
         public void OpenInventory()
@@ -60,12 +61,13 @@ namespace TeamProject28
 
             Console.WriteLine("\n1. 장착 관리");
             Console.WriteLine("2. 포션 마시기");
+            Console.WriteLine("3. 상점 이용");
             Console.WriteLine("0. 돌아가기");
             Console.Write("\n원하시는 행동을 입력해주세요\n >>");
 
             int input = GameStart.instance.Input();
 
-            while (input < 0 || input > 2)
+            while (input < 0 || input > 3)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다");
@@ -84,8 +86,12 @@ namespace TeamProject28
                     //포션 마시기
                     DrinkPotion();
                     break;
+                case 3:
+                    //상점 이용
+                    shop.Shopping();
+                    break;
                 case 0:
-                    //itemList.items = itemList.items;
+                    itemList.items = itemList.items;
                     GameStart.instance.Start();
                     return;
             }
@@ -133,7 +139,7 @@ namespace TeamProject28
             }
 
             Console.WriteLine("\n0. 돌아가기");
-            Console.Write("\n원하시는 행동을 입력해주세요\n >>");
+            Console.Write("\n장착하거나 해제할 아이템을 입력해주세요\n >>");
 
             int input = GameStart.instance.Input();
 
@@ -222,7 +228,7 @@ namespace TeamProject28
             }
 
             Console.WriteLine("\n0. 돌아가기");
-            Console.Write("\n원하시는 행동을 입력해주세요\n >>");
+            Console.Write("\n마실 포션을 입력해주세요\n >>");
 
             int input = GameStart.instance.Input();
 
