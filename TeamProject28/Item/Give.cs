@@ -73,6 +73,8 @@ namespace TeamProject28
             {
                 for (int i = 1; i <= itemList.itemCount; i++)
                 {
+                    if (GameStart.instance.quest.questList[1].is_Quest == true)
+                        GameStart.instance.quest.questList[1].tmp_goal += 1;
                     int j = itemList.itemCount - i;
                     if (itemList.items[j].price < (temp / 5) * 1000 && itemList.items[j].type == ItemType.IQ)
                     {
@@ -86,6 +88,8 @@ namespace TeamProject28
             // 집중력 템 획득 확률
             if (random.Next(0, 5) < temp % 5)
             {
+                if (GameStart.instance.quest.questList[1].is_Quest == true)
+                    GameStart.instance.quest.questList[1].tmp_goal += 1;
                 for (int i = 1; i <= itemList.itemCount; i++)
                 {
                     int j = itemList.itemCount - i;

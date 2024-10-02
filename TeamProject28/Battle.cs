@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TeamProject28.GameManager;
+using TeamProject28.Quest_Folder;
 
 namespace TeamProject28
 {
@@ -74,7 +75,6 @@ namespace TeamProject28
                             PlayerTurn(); // 스킬 사용 실패 시 PlayerTurn으로 돌아감
                             break;
                         }
-                        player.UseSkill(skillIndex, new List<Monster>());
                         Console.WriteLine($"{player.name}에게 {skill.skillName}이(가) 적용되었습니다.");
                         WaitForNextStep();
                     }
@@ -82,13 +82,13 @@ namespace TeamProject28
                     {
                         // 단일 대상 스킬
                         SelectSingleTarget(skillIndex);
-                        WaitForNextStep();
+                        //WaitForNextStep();
                     }
                     else if (skill.numberPerson == 2)
                     {
                         // 다수 대상 스킬
                         SelectMultipleTargets(skillIndex, skill.numberPerson);
-                        WaitForNextStep();
+                        //WaitForNextStep();
                     }
 
                     // 스킬 사용 후 상태창 출력
@@ -415,6 +415,7 @@ namespace TeamProject28
                 //사망 처리
                 if (selectMonster.currentTime <= 0) // 몬스터가 죽었을 때 처리
                 {
+                    Console.Clear();
                     Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}은(는) 죽었습니다.");
                     selectMonster.currentTime = 0; // 체력을 0으로 설정
                 }
@@ -424,7 +425,7 @@ namespace TeamProject28
                 }
 
                 // 정보를 확인하고 다음 단계로 이동
-                Console.Clear();
+                //Console.Clear();
                 ShowBattleStatus();
                 WaitForNextStep();
             }
