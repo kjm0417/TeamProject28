@@ -140,9 +140,11 @@ namespace TeamProject28.GameManager
             string playerFileName = "./playerData.json";
             string itemFileName = "./itemData.json";
             string questFileName = "./questData.json";
+
             string jsonPlayer = JsonSerializer.Serialize<Player>(player);
             string jsonItem = JsonSerializer.Serialize<ItemList>(itemList);
             string jsonQuest = JsonSerializer.Serialize<Quest>(quest);
+
             File.WriteAllText(playerFileName, jsonPlayer);
             File.WriteAllText(itemFileName, jsonItem);
             File.WriteAllText(questFileName, jsonQuest);
