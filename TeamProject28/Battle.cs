@@ -12,7 +12,6 @@ namespace TeamProject28
     {
         public Player player;
         public Give give;
-        //public static int stage = 1;
         Random random = new Random();
 
         public List<Monster> monsters = new List<Monster>();
