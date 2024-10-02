@@ -16,7 +16,8 @@ namespace TeamProject28.GameManager
         public Player player = new Player();//player 정보 가져오기
         public Battle battle = new Battle();//전투 정보 가져오기
         public Inventory inventory = new Inventory(); //인벤토리 가져오기
-        public Quest quest = new Quest(); //퀘스트 가져오기
+        public Quest quest_Menu = new Quest(); //퀘스트 가져오기
+        public QuestList questList = new QuestList(); //퀘스트 가져오기
         public static GameStart instance;
         public ItemList itemList = new ItemList();
 
@@ -85,13 +86,13 @@ namespace TeamProject28.GameManager
                     break;
                 case 3:
                     {
-                        if (quest.questList[0].is_Quest == true)
-                            quest.questList[0].tmp_goal += 1;
+                        if (questList.quests[0].is_Quest == true)
+                            questList.quests[0].tmp_goal += 1;
                         battle.Start();
                         break;
                     }
                 case 4:
-                    quest.OpenQuest();
+                    quest_Menu.OpenQuest();
                     break;
                 case 0:
                     Environment.Exit(0);
@@ -127,11 +128,11 @@ namespace TeamProject28.GameManager
             if (File.Exists("./questData.json"))
             {
                 string json = File.ReadAllText("./questData.json");
-                quest = JsonSerializer.Deserialize<Quest>(json);
+                questList = JsonSerializer.Deserialize<QuestList>(json);
             }
             else
             {
-                quest.Quest_Init();
+                questList.Quest_Init();
             }
         }
 
@@ -143,7 +144,7 @@ namespace TeamProject28.GameManager
 
             string jsonPlayer = JsonSerializer.Serialize<Player>(player);
             string jsonItem = JsonSerializer.Serialize<ItemList>(itemList);
-            string jsonQuest = JsonSerializer.Serialize<Quest>(quest);
+            string jsonQuest = JsonSerializer.Serialize<QuestList>(questList);
 
             File.WriteAllText(playerFileName, jsonPlayer);
             File.WriteAllText(itemFileName, jsonItem);

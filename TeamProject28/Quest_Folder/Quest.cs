@@ -9,22 +9,44 @@ namespace TeamProject28.Quest_Folder
 {
     public class Quest
     {
-        public List<QuestList> questList { get; set; }
+        public QuestList questList;
 
-        public void Quest_Init()
+        public bool is_Clear { get; set; }
+        public bool is_Quest { get; set; }//퀘스트 진행중인지
+        public string name { get; set; }//퀘스트 이름
+        public string inform { get; set; }//퀘스트 정보
+        public string goals_inform { get; set; }//퀘스 목표 정보
+        public int goal { get; set; }
+        public int tmp_goal { get; set; }
+        public int reward { get; set; }//퀘스트 보상
+
+        public Quest()
         {
-            questList = new List<QuestList>();
-            questList.Add(new Quest1());
-            questList.Add(new Quest2());
-            questList.Add(new Quest3());
+            goal = 10;
+            tmp_goal = 0;
+            is_Clear = false;
+            is_Quest = false;
+            name = "으아아아";
+            inform = "이야야야";
+            goals_inform = "크아아아악" + " (" + tmp_goal + " / " + goal + ")";
+            reward = 1000;
+        }
 
-            questList[0].Quest_Init();
-            questList[1].Quest_Init();
-            questList[2].Quest_Init();
+        public Quest(bool is_Clear, bool is_Quest, string name, string inform, string goals_inform, int goal, int tmp_goal, int reward)
+        {
+            this.is_Clear = is_Clear;
+            this.is_Quest = is_Quest;
+            this.name = name;
+            this.inform = inform;
+            this.goals_inform = goals_inform;
+            this.goal = goal;
+            this.tmp_goal = tmp_goal;
+            this.reward = reward;
         }
 
         public void OpenQuest()
         {
+            questList = GameStart.instance.questList;
             // 이전 창 지우기
             Console.Clear();
             //상태창 띄우기
@@ -33,24 +55,23 @@ namespace TeamProject28.Quest_Folder
             Console.ForegroundColor = ConsoleColor.White;
 
             int index = 1;
-            foreach(QuestList quest in questList)
+
+            foreach (Quest quest in questList.quests)
             {
-                if(questList[index - 1].is_Clear == true)
+                if (questList.quests[index - 1].is_Clear == true)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("{0}. {1}(완료)", index, questList[index - 1].name);
+                    Console.WriteLine("{0}. {1}(완료)", index, questList.quests[index - 1].name);
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if (questList[index - 1].is_Quest == true)
+                else if (questList.quests[index - 1].is_Quest == true)
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("{0}. {1}(진행중)", index, questList[index - 1].name);
+                    Console.WriteLine("{0}. {1}(진행중)", index, questList.quests[index - 1].name);
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 else
-                {
-                    Console.WriteLine("{0}. {1}", index, questList[index - 1].name);
-                }
+                    Console.WriteLine("{0}. {1}", index, questList.quests[index - 1].name);
                 index++;
             }
             Console.WriteLine("0. 나가기\n\n");
@@ -67,9 +88,9 @@ namespace TeamProject28.Quest_Folder
                 input = GameStart.instance.Input();
             }
 
-            if(input != 0)
+            if (input != 0)
             {
-                while (questList[input - 1].is_Clear == true)
+                while (questList.quests[input - 1].is_Clear == true)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("이미 클리어하였습니다.");
@@ -96,12 +117,20 @@ namespace TeamProject28.Quest_Folder
                     return;
             }
         }
-
         public void Quest_Open(int num)
         {
-            questList[0].Quest_Tmp();
-            questList[1].Quest_Tmp();
-            questList[2].Quest_Tmp();
+            if(num  == 0)
+            {
+                questList.quests[num].goals_inform = $"스테이지 3회 클리어 ( {questList.quests[num].tmp_goal} / {questList.quests[num].goal} )";
+            }
+            else if (num == 1)
+            {
+                questList.quests[num].goals_inform = $"아이템 3회 획득하기 ( {questList.quests[num].tmp_goal} / {questList.quests[num].goal} )";
+            }
+            else if(num == 2)
+            {
+                questList.quests[num].goals_inform = $"회복 아이템 3회 사용하기 ( {questList.quests[num].tmp_goal} / {questList.quests[num].goal} )";
+            }
             // 이전 창 지우기
             Console.Clear();
             //상태창 띄우기
@@ -109,15 +138,15 @@ namespace TeamProject28.Quest_Folder
             Console.WriteLine("Quest!!\n");
             Console.ForegroundColor = ConsoleColor.White;
 
-            Console.WriteLine(questList[num].name + "\n");
-            Console.WriteLine(questList[num].inform + "\n");
-            Console.WriteLine(questList[num].goals_inform + "\n");
+            Console.WriteLine(questList.quests[num].name + "\n");
+            Console.WriteLine(questList.quests[num].inform + "\n");
+            Console.WriteLine(questList.quests[num].goals_inform + "\n");
             Console.WriteLine("보상");
-            Console.WriteLine(questList[num].reward + "G\n\n");
+            Console.WriteLine(questList.quests[num].reward + "G\n\n");
 
-            if (questList[num].is_Quest == true)
+            if (questList.quests[num].is_Quest == true)
             {
-                if (questList[num].goal <= questList[num].tmp_goal)
+                if (questList.quests[num].goal <= questList.quests[num].tmp_goal)
                 {
                     Console.WriteLine("1. 보상 받기");
                     Console.WriteLine("2. 돌아가기\n\n");
@@ -136,9 +165,9 @@ namespace TeamProject28.Quest_Folder
                     {
                         case 1:
                             {
-                                GameManager.GameStart.instance.player.gold += questList[num].reward;
-                                questList[num].is_Clear = true;
-                                questList[num].is_Quest = false;
+                                GameStart.instance.player.gold += questList.quests[num].reward;
+                                questList.quests[num].is_Clear = true;
+                                questList.quests[num].is_Quest = false;
                             }
                             break;
                         default:
@@ -184,7 +213,7 @@ namespace TeamProject28.Quest_Folder
                 {
                     case 1:
                         {
-                            questList[num].is_Quest = true;
+                            questList.quests[num].is_Quest = true;
                         }
                         break;
                     default:

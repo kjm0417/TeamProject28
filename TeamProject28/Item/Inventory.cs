@@ -254,8 +254,8 @@ namespace TeamProject28
                     }
                     else
                     {
-                        if (GameStart.instance.quest.questList[2].is_Quest == true)
-                            GameStart.instance.quest.questList[2].tmp_goal += 1;
+                        if (GameStart.instance.questList.quests[2].is_Quest == true)
+                            GameStart.instance.questList.quests[2].tmp_goal += 1;
 
                         itemList.items[6].quantity -= 1;
                         player.currentTime += 30;
