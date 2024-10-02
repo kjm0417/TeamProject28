@@ -25,10 +25,6 @@ namespace TeamProject28.Quest_Folder
 
         public void OpenQuest()
         {
-            questList[0].Quest_Tmp();
-            questList[1].Quest_Tmp();
-            questList[2].Quest_Tmp();
-
             // 이전 창 지우기
             Console.Clear();
             //상태창 띄우기
@@ -103,6 +99,9 @@ namespace TeamProject28.Quest_Folder
 
         public void Quest_Open(int num)
         {
+            questList[0].Quest_Tmp();
+            questList[1].Quest_Tmp();
+            questList[2].Quest_Tmp();
             // 이전 창 지우기
             Console.Clear();
             //상태창 띄우기
