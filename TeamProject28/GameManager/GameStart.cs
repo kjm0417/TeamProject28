@@ -86,7 +86,7 @@ namespace TeamProject28.GameManager
                 case 3:
                     {
                         if (quest.questList[0].is_Quest == true)
-                            quest.questList[0].tmp_goal+=1;
+                            quest.questList[0].tmp_goal += 1;
                         battle.Start();
                         break;
                     }
