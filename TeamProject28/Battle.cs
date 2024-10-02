@@ -13,6 +13,8 @@ namespace TeamProject28
     {
         public Player player;
         public Give give;
+        private double originalIQ;
+        //public static int stage = 1;
         Random random = new Random();
 
         public List<Monster> monsters = new List<Monster>();
@@ -21,6 +23,8 @@ namespace TeamProject28
         {
             player = GameStart.instance.player;
             give = new Give();
+
+            originalIQ = player.IQ;
             monsters.Clear();
             if (player.stage_Tmp % 5 == 0)
             {
@@ -484,6 +488,9 @@ namespace TeamProject28
                 Console.WriteLine("You Lose\n");
                 Console.ForegroundColor = ConsoleColor.White;
             }
+
+            //원상 복구 공격력
+            player.IQ = originalIQ;
 
             Console.WriteLine("[캐릭터 정보]");
             Console.Write($"Lv.{beforeLevel} {player.name}");
