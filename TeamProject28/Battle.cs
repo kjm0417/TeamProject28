@@ -318,7 +318,7 @@ namespace TeamProject28
             Console.Clear();
             Console.WriteLine("Battle!!");
 
-            for (int i = 0; i < monsters.Count; i++)
+            for (int i = 0; i < monsters.Count; i++) //몬스터리스트 받아서 몬스터 정보 출력
             {
                 Monster monster = monsters[i];
                 Console.WriteLine($"\n{i + 1}. Lv. {monster.level} {monster.name}  TIme {(monster.currentTime<=0?"Dead": monster.currentTime)}");
@@ -506,18 +506,24 @@ namespace TeamProject28
             Console.Write("0. 다음\n>>");
 
             int input = GameStart.instance.Input();
-            if (input == 0)
+            while (input != 0)
             {
-                if (!victory)
-                {
-                    GameOver();
-                }
-                else
-                {
-                    GameStart.instance.Start(); // 승리 후 다음 선택
-                }
+                Console.WriteLine("잘못입력하셨습니다.");
+                input = GameStart.instance.Input();
+
+            }
+
+            if (!victory)
+            {
+                GameOver();
+            }
+            else
+            {
+                GameStart.instance.Start(); // 승리 후 다음 선택
             }
             Console.Clear();
+
+           
         }
 
       
