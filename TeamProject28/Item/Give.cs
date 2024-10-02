@@ -76,8 +76,8 @@ namespace TeamProject28
                     int j = itemList.itemCount - i;
                     if (itemList.items[j].price < (temp / 5) * 1000 && itemList.items[j].type == ItemType.IQ)
                     {
-                        if (GameStart.instance.quest.questList[1].is_Quest == true)
-                            GameStart.instance.quest.questList[1].tmp_goal += 1;
+                        if (GameStart.instance.questList.quests[1].is_Quest == true)
+                            GameStart.instance.questList.quests[1].tmp_goal += 1;
                         itemList.items[j].quantity++;
                         Console.WriteLine($"{ itemList.items[j].name } - 1");
                         break;
@@ -93,8 +93,8 @@ namespace TeamProject28
                     int j = itemList.itemCount - i;
                     if (itemList.items[j].price < (temp / 5) * 1000 && itemList.items[j].type == ItemType.focus)
                     {
-                        if (GameStart.instance.quest.questList[1].is_Quest == true)
-                            GameStart.instance.quest.questList[1].tmp_goal += 1;
+                        if (GameStart.instance.questList.quests[1].is_Quest == true)
+                            GameStart.instance.questList.quests[1].tmp_goal += 1;
                         itemList.items[j].quantity++;
                         Console.WriteLine($"{itemList.items[j].name} - 1");
                         break;
