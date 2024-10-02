@@ -88,7 +88,9 @@ namespace TeamProject28.GameManager
                     quest.OpenQuest();
                     break;
                 case 0:
-                    return;
+                    Environment.Exit(0);
+                    break;
+
             }
         }
 

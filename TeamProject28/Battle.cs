@@ -45,11 +45,12 @@ namespace TeamProject28
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("\n사용할 스킬을 선택하세요:\n");
 
                 for (int i = 0; i < GameStart.instance.skills.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {GameStart.instance.skills[i].skillName} (Cost: {GameStart.instance.skills[i].manaCost} 열정)");
+                    Console.WriteLine($"{i + 1}. {GameStart.instance.skills[i].skillName} (Cost: {GameStart.instance.skills[i].manaCost} 열정) - {GameStart.instance.skills[i].skillDescription}");
                 }
                 Console.WriteLine("0. 취소");
 
@@ -67,18 +68,28 @@ namespace TeamProject28
                     if (skill.isSelfBuff)
                     {
                         // 자기 자신에게 버프 적용
+                        bool skillUsed = player.UseSkill(skillIndex, new List<Monster>());
+                        if (!skillUsed)
+                        {
+                            WaitForNextStep();
+                            PlayerTurn(); // 스킬 사용 실패 시 PlayerTurn으로 돌아감
+                            break;
+                        }
                         player.UseSkill(skillIndex, new List<Monster>());
                         Console.WriteLine($"{player.name}에게 {skill.skillName}이(가) 적용되었습니다.");
+                        WaitForNextStep();
                     }
                     else if (skill.numberPerson == 1)
                     {
                         // 단일 대상 스킬
                         SelectSingleTarget(skillIndex);
+                        WaitForNextStep();
                     }
                     else if (skill.numberPerson == 2)
                     {
                         // 다수 대상 스킬
                         SelectMultipleTargets(skillIndex, skill.numberPerson);
+                        WaitForNextStep();
                     }
 
                     // 스킬 사용 후 상태창 출력
@@ -94,7 +105,8 @@ namespace TeamProject28
                     }
 
                     // 스킬 사용 후 적의 공격
-                    MonsterAttack();
+                    //MonsterAttack();
+
 
                     break; // 적 공격 후 턴 종료
                 }
@@ -105,6 +117,8 @@ namespace TeamProject28
 
         public void SelectSingleTarget(int skillIndex)
         {
+
+
             while (true)
             {
                 Console.WriteLine("\n공격할 대상을 선택하세요:\n");
@@ -122,7 +136,14 @@ namespace TeamProject28
                 if (targetIndex >= 0 && targetIndex < monsters.Count && monsters[targetIndex].currentTime > 0)
                 {
                     var targetMonster = monsters[targetIndex];
-                    player.UseSkill(skillIndex, new List<Monster> { targetMonster });
+                    bool skillUsed = player.UseSkill(skillIndex, new List<Monster> { targetMonster });
+
+                    if (!skillUsed)
+                    {
+                        WaitForNextStep();
+                        PlayerTurn(); // 스킬 사용 실패 시 PlayerTurn으로 돌아감
+                        break;
+                    }
 
                     if (targetMonster.currentTime <= 0)
                     {
@@ -147,6 +168,15 @@ namespace TeamProject28
         {
             List<Monster> selectedMonsters = new List<Monster>();
 
+            int aliveMonstersCount = monsters.Count(m => m.currentTime > 0);
+            if (aliveMonstersCount < targetCount) //몬스터 수가 부족하면 스킬 사용 불가 처리
+            {
+                Console.WriteLine($"이 스킬은 {targetCount}명 이상의 적에게만 사용할 수 있습니다. 다른 스킬을 선택하세요.");
+                WaitForNextStep();
+                PlayerTurn(); // 스킬 사용 실패 시 PlayerTurn으로 돌아감
+                return;
+            }
+
             for (int t = 0; t < targetCount; t++)
             {
                 while (true)
@@ -154,7 +184,7 @@ namespace TeamProject28
                     Console.WriteLine("\n공격할 대상을 선택하세요:\n");
                     for (int i = 0; i < monsters.Count; i++)
                     {
-                        if (!selectedMonsters.Contains(monsters[i]) && monsters[i].currentTime > 0)
+                        if (!selectedMonsters.Contains(monsters[i]) && monsters[i].currentTime > 0) //선택이 안된 몬스터 체력이 0보다 높은
                         {
                             Console.WriteLine($"{i + 1}. Lv. {monsters[i].level} {monsters[i].name} (HP: {monsters[i].currentTime})");
                         }
@@ -174,7 +204,14 @@ namespace TeamProject28
                 }
             }
 
-            player.UseSkill(skillIndex, selectedMonsters);
+            bool skillUsed = player.UseSkill(skillIndex, selectedMonsters);
+
+            if (!skillUsed)
+            {
+                WaitForNextStep();
+                PlayerTurn(); // 스킬 사용 실패 시 PlayerTurn으로 돌아감
+                return;
+            }
 
             foreach (var targetMonster in selectedMonsters)
             {
@@ -208,7 +245,7 @@ namespace TeamProject28
                 }
 
                 //// 적의 턴
-                //MonsterAttack();
+                MonsterAttack();
 
                 // 플레이어가 죽었는지 확인
                 if (player.currentTime <= 0)
@@ -235,7 +272,7 @@ namespace TeamProject28
             }
             Console.ForegroundColor = ConsoleColor.White;
 
-            Console.WriteLine($"\n[내정보]\nLv.{player.level} {player.name} {player.job}\nHP {player.currentTime}/{player.maxTime}\n");
+            Console.WriteLine($"\n[내정보]\nLv.{player.level} {player.name} {player.job}\nTime {player.currentTime}/{player.maxTime}\n열정 {player.currentPassion}/{player.maxPassion} ");
             Console.WriteLine("1. 공격");
             Console.WriteLine("2. 스킬\n");
 
@@ -279,6 +316,7 @@ namespace TeamProject28
 
         public void PlayerAttack()
         {
+            Console.Clear();
             Console.WriteLine("Battle!!");
 
             for (int i = 0; i < monsters.Count; i++)
@@ -290,6 +328,7 @@ namespace TeamProject28
             Console.WriteLine("\n[내정보]");
             Console.WriteLine($"Lv. {player.level} {player.name} ({player.job})");
             Console.WriteLine($"Time {player.currentTime}/{player.maxTime}");
+            Console.WriteLine($"열정 {player.currentPassion}/{player.maxPassion}");
             Console.WriteLine("\n0. 취소\n");
 
             Console.Write("대상을 선택해주세요.\n>>");
@@ -298,6 +337,7 @@ namespace TeamProject28
 
             if (target < 0 || target > monsters.Count)
             {
+
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("잘못된 입력입니다");
                 Console.ForegroundColor = ConsoleColor.White;
@@ -310,7 +350,8 @@ namespace TeamProject28
             }
 
             //선택한 몬스터 번호 받기
-            Monster selectMonster = monsters[target - 1]; //target은 1부터 인데 배열은 0부터여서 
+            //target은 1부터 인데 배열은 0부터여서 
+            Monster selectMonster = monsters[target - 1];
 
             if (selectMonster.currentTime <= 0) //죽은 몬스터 선택했을 때 다시 입력
             {
@@ -340,6 +381,7 @@ namespace TeamProject28
                     Console.WriteLine("Battle!!!\n");
                     Console.WriteLine($"{player.name}의 공격!");
                     Console.WriteLine($"Lv {selectMonster.level} {selectMonster.name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
+                    WaitForNextStep();
                 }
                 else
                 {
@@ -353,6 +395,7 @@ namespace TeamProject28
                         Console.WriteLine("Battle!!!\n");
                         Console.WriteLine($"{player.name}의 공격!");
                         Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}을(를) 맞췄습니다. [데미지 : {criticalAttack}] - 치명타 공격!!");
+                        WaitForNextStep();
 
                     }
                     else
@@ -365,6 +408,7 @@ namespace TeamProject28
                         Console.WriteLine("Battle!!!\n");
                         Console.WriteLine($"{player.name}의 공격!");
                         Console.WriteLine($"Lv. {selectMonster.level} {selectMonster.name}을(를) 맞췄습니다. [데미지 : {playerAttack}]");
+                        WaitForNextStep();
                     }
                 }
 
@@ -381,6 +425,8 @@ namespace TeamProject28
                 }
 
                 // 정보를 확인하고 다음 단계로 이동
+                Console.Clear();
+                ShowBattleStatus();
                 WaitForNextStep();
             }
         }
@@ -457,7 +503,7 @@ namespace TeamProject28
             give.GiveEquipment();
             Console.WriteLine();
 
-            Console.WriteLine("0. 다음\n");
+            Console.Write("0. 다음\n>>");
 
             int input = GameStart.instance.Input();
             if (input == 0)
@@ -478,7 +524,9 @@ namespace TeamProject28
 
         public void ShowBattleStatus()
         {
-            Console.WriteLine("\n현재 전투 상황\n");
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("현재 전투 상황\n");
 
             foreach (Monster monster in monsters)
             {
@@ -497,7 +545,7 @@ namespace TeamProject28
 
         public void WaitForNextStep()
         {
-            Console.WriteLine("\n1. 계속하기\n");
+            Console.Write("\n게속 진행을 위해 1을 입력해주세요\n>>");
 
             int input = GameStart.instance.Input();
             while (input != 1)

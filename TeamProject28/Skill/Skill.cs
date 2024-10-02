@@ -13,13 +13,15 @@ namespace TeamProject28
         public int manaCost { get; set; }
 
         public bool isSelfBuff { get; set; }
+        public string skillDescription { get; set; }
 
-        public Skill(string skillName, int numberPerson, int manaCost, bool isSelfBuff = false)
+        public Skill(string skillName, int numberPerson, int manaCost, string skillDescription , bool isSelfBuff = false )
         {
             this.skillName = skillName;
             this.numberPerson = numberPerson;
             this.manaCost = manaCost;
             this.isSelfBuff = isSelfBuff;
+            this.skillDescription = skillDescription;
         }
 
         // 스킬 사용 시 추상 메서드
@@ -32,7 +34,7 @@ namespace TeamProject28
     //한명 적을 2배 피해 주는 기술
     public class SuperPower : Skill
     {
-        public SuperPower() : base("해설 문제 보기", 1, 15, false)
+        public SuperPower() : base("해설 문제 보기", 1, 15, "과제 1개에게 2배의 데미지", false)
         {
 
         }
@@ -55,7 +57,7 @@ namespace TeamProject28
 
     public class DoubleAttack : Skill
     {
-        public DoubleAttack() : base("Multi Attack", 2, 15, false) { }
+        public DoubleAttack() : base("Multi Attack", 2, 15, "과제 2개에게 15의 데미지", false ) { }
 
         public override void Use(Player player, List<Monster> targets)
         {
@@ -81,7 +83,7 @@ namespace TeamProject28
     {
         public int BuffAmount { get; set; }
 
-        public AttackBuff() : base("Attack Buff", 0, 13,true) // 0은 적을 공격하지 않음
+        public AttackBuff() : base("Attack Buff", 0, 13, "자신의 iQ를 5만큼 증가", true ) // 0은 적을 공격하지 않음
         {
             BuffAmount = 5;
         }
@@ -98,7 +100,7 @@ namespace TeamProject28
     {
         public int HealAmount { get; set; }
 
-        public Heal() : base("Heal", 0, 20, true) // 0은 적을 공격하지 않음
+        public Heal() : base("Heal", 0, 20, "자신의 Time을 30힐한다", true ) // 0은 적을 공격하지 않음
         {
             HealAmount = 30;
         }

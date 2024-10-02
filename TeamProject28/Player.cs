@@ -50,7 +50,7 @@ namespace TeamProject28
 
         //플레이어가 스킬을 사용하기 위한 구현
         //스킬에 대한 배열 가져오기 skill가져와서 사용해야한다, 스킬 코르기 위한 int
-        public void UseSkill(int skillindex, List<Monster> target) 
+        public bool UseSkill(int skillindex, List<Monster> target) 
         {
             if (skillindex >= 0 && skillindex < GameStart.instance.skills.Count)
             {
@@ -62,14 +62,16 @@ namespace TeamProject28
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"{selectedSkill.skillName} 스킬을 사용했습니다!");
                     selectedSkill.Use(this, target);
+                    return true; // 스킬 사용 성공
                 }
                 else
                 {
-                    Console.WriteLine("마나가 부족합니다.");
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("열정이 부족합니다.");
+                    return false; // 스킬 사용 실패
                 }
             }
+            return false; // 유효하지 않은 스킬 인덱스
         }
 
         //플레이어가 전투중에 스킬을 사용
