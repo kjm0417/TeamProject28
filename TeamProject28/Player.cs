@@ -26,7 +26,8 @@ namespace TeamProject28
         public int currentPassion { get; set; }
         public int gold { get; set; }
         public int exp { get; set; }
-
+        public int stage { get; set; }//스테이지
+        public int stage_Tmp { get; set; }//현재 스테이지
 
         public Player()
         {
@@ -43,6 +44,9 @@ namespace TeamProject28
             this.currentPassion = maxPassion;
             this.gold = 1500;
             this.exp = 0;
+            this.stage_Tmp = 1;
+            if (this.stage <= this.stage_Tmp)
+                this.stage = this.stage_Tmp;
         }
 
         public enum Job { 수강생, 튜터, 담임매니저 }

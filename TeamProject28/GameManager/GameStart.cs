@@ -38,7 +38,9 @@ namespace TeamProject28.GameManager
             if (instance == null)
             {
                 instance = this;
-            }       
+            }
+
+            Save();
 
             ActionSelect();
 
@@ -48,9 +50,13 @@ namespace TeamProject28.GameManager
 
         public void ActionSelect()
         {
+            if (player.stage <= player.stage_Tmp)
+                player.stage = player.stage_Tmp;
             Console.Clear();
             Console.WriteLine("스파르타 무한의 탑에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 무한의 탑을 오르면서 높을 층을 갱신하는 게임입니다");
+            Console.WriteLine("도달한 최고 스테이지 : {0}", player.stage);
+            Console.WriteLine("현재 스테이지 : {0}\n\n", player.stage_Tmp);
 
             Console.WriteLine("\n1. 상태 보기");
             Console.WriteLine("2. 인벤토리");

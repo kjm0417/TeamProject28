@@ -12,7 +12,7 @@ namespace TeamProject28
     {
         public Player player;
         public Give give;
-        public static int stage = 1;
+        //public static int stage = 1;
         Random random = new Random();
 
         public List<Monster> monsters = new List<Monster>();
@@ -22,7 +22,7 @@ namespace TeamProject28
             player = GameStart.instance.player;
             give = new Give();
             monsters.Clear();
-            if (stage % 5 == 0)
+            if (player.stage_Tmp % 5 == 0)
             {
                 monsters.Add(new Monster(MonsterType.Boss)); //보스 몬스터 
             }
@@ -463,6 +463,7 @@ namespace TeamProject28
 
         public void EndBattle(bool victory)
         {
+            player.stage_Tmp++;
             Console.Clear();
             Console.WriteLine("Battle!! - Result\n");
             int beforeExp = player.exp;
@@ -510,7 +511,7 @@ namespace TeamProject28
             {
                 if (!victory)
                 {
-                    //GameOver();
+                    GameOver();
                 }
                 else
                 {
@@ -555,9 +556,6 @@ namespace TeamProject28
                 Console.ForegroundColor = ConsoleColor.White;
                 input = GameStart.instance.Input();
             }
-
-            
-
         }
 
         public void GetExp()
@@ -611,9 +609,27 @@ namespace TeamProject28
         public void GameOver()
         {
             Console.Clear();
-            Console.WriteLine("플레이어가 죽었습니다.!");
-            GameStart.instance.ActionSelect();
-            // 게임 오버 후 처리 로직 추가
+            Console.WriteLine("플레이어가 죽었습니다!");
+            Console.WriteLine("다시 도전하세요!!\n");
+
+            Console.WriteLine("0을 입력해주세요.");
+            int input = GameStart.instance.Input();
+            while (input != 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("잘못된 입력입니다. 0을 입력해주세요.");
+                Console.ForegroundColor = ConsoleColor.White;
+                input = GameStart.instance.Input();
+            }
+
+            player.level = 1;
+            player.currentTime = player.maxTime;
+            player.currentPassion = player.maxPassion;
+            player.stage_Tmp = 1;
+
+            GameStart.instance.Save();
+            GameStart.instance.Start();
+
         }
 
     }
