@@ -57,7 +57,7 @@ namespace TeamProject28
 
     public class DoubleAttack : Skill
     {
-        public DoubleAttack() : base("Multi Attack", 2, 15, "과제 2개에게 15의 데미지", false ) { }
+        public DoubleAttack() : base("Multi Attack", 2, 15, "과제 2개에게 플레이어 iQ의 1.5배 데미지", false ) { }
 
         public override void Use(Player player, List<Monster> targets)
         {
